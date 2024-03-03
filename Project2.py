@@ -1,5 +1,5 @@
 # # WALL GEOMETRY # #
-# GIVEN:
+# Constant Dimensions (in Feet):
 
 StemTop = 1
 D = 2
@@ -17,7 +17,7 @@ def main():
     Height = simpledialog.askfloat("Input", "Enter the height of the stem (H) in feet.")
 
     # Display the result in a message box
-    tk.messagebox.showinfo("Confirmed", f"You input: {Height} , thank you!")
+    tk.messagebox.showinfo("Confirmed", f"You input: {Height} !")
 
 if __name__ == "__main__":
     main()
@@ -29,12 +29,10 @@ def main():
     root.withdraw()  # Hide the root window
 
     # Prompt the user to input dimensions using a popup window
-    Gammab = simpledialog.askfloat("Input", "Enter the value of \u03B3b in lbs/cubic foot.")
-    Gammat = simpledialog.askfloat("Input", "Enter the value of \u03B3t in lbs/ cubic foot.")
-    Gammac = simpledialog.askfloat("Input", "Enter the value of \u03B3c in lbs/ cubic foot.")
+    Gamma = simpledialog.askfloat("Input", "Enter the value of \u03B3b in lbs/cubic foot.")
 
     # Display the result in a message box
-    tk.messagebox.showinfo("Confirmed", f"You input: {Gammab, Gammat, Gammac} , for \u03B3b, \u03B3t and \u03B3c respectively, thank you!")
+    tk.messagebox.showinfo("Confirmed", f"You input: {Gamma } , for \u03B3 !")
 
 if __name__ == "__main__":
     main()
@@ -44,11 +42,10 @@ def main():
     root.withdraw()  # Hide the root window
 
     # Prompt the user to input dimensions using a popup window
-    Phib = simpledialog.askfloat("Input", "Enter the value of \u03c6 'b in degrees")
-    Phit = simpledialog.askfloat("Input", "Enter the value of \u03c6 't in degrees")
+    Phi = simpledialog.askfloat("Input", "Enter the value of \u03c6 in degrees")
 
     # Display the result in a message box
-    tk.messagebox.showinfo("Confirmed", f"You input: {Phib, Phit} , for \u03c6 'b and \u03c6 't respectively, thank you!")
+    tk.messagebox.showinfo("Confirmed", f"You input: {Phi , for \u03c6 respectively, thank you!")
 
 if __name__ == "__main__":
     main()
