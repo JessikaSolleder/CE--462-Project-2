@@ -22,6 +22,8 @@ def main():
 if __name__ == "__main__":
     main()
     
+
+
 def main():
     root = tk.Tk()
     root.withdraw()  # Hide the root window
@@ -50,6 +52,12 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
 
 import numpy as np
 import matplotlib.pyplot as plt
