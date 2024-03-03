@@ -53,10 +53,11 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-
-
-
+Stemheight = 1 * Height
+Stembottom = 0.5 * Height
+Slabthickness = 0.1 * Height
+Heel = 0.1 * Height
+Toe = 0.3 * Height
 
 
 import numpy as np
