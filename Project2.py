@@ -37,7 +37,7 @@ def main():
  
 def rankine_analysis(SoilHeight, Gamma, Alpha, Phi):
     
-    global RPv, RPh, RPa, RPa, RKp, RKa
+    global RPv, RPh, RPa, RPa, RKp, RKa, RPp
     
     # Convert angles from degrees to radians
     
@@ -61,12 +61,15 @@ def rankine_analysis(SoilHeight, Gamma, Alpha, Phi):
     RPh = RPa * np.cos(Alpha_rad)
 
 def coloumb_pressure():
+    
+    global CPv, CPh, CPa, CPa, CKp, CKa, CPp
 
  # Calculate the coefficient (Ka) of the active earth pressure using Coulomb
     CKa = ((np.cos(Phi)) ** 2) / (np.cos(Alpha)*(1+((np.sin(Phi + Alpha) * (np.sin(Phi - Alpha)))/(np.cos(Alpha)*(np.cos(-Alpha))) ** 0.5) ** 2))
 
  # Calculate the coefficient (Kp) of the passive earth pressure using Coulomb
     CKp = (1 + np.sin(Phi_rad)) / (1 - np.sin(Phi_rad))
+    
 # Calculate Coulomb Lateral Earth Pressures for the active and passive conditions
     CPp = 0.5 * RKp * (Gamma * (SoilHeight ** 2))
     CPa = 0.5 * (CKa*Gamma*(SoilHeight ** 2))
