@@ -27,12 +27,12 @@ def main():
     root.withdraw()  # Hide the root window
 
     # Prompt the user to input dimensions using a popup window
-    Gammab = simpledialog.askfloat("Input", "Enter the value of Gamma b in lbs/cubic foot.")
-    Gammat = simpledialog.askfloat("Input", "Enter the value of Gamma t in lbs/ cubic foot.")
-    Gammac = simpledialog.askfloat("Input", "Enter the value of Gamma c in lbs/ cubic foot.")
+    Gammab = simpledialog.askfloat("Input", "Enter the value of \u03B3b in lbs/cubic foot.")
+    Gammat = simpledialog.askfloat("Input", "Enter the value of \u03B3t in lbs/ cubic foot.")
+    Gammac = simpledialog.askfloat("Input", "Enter the value of \u03B3c in lbs/ cubic foot.")
 
     # Display the result in a message box
-    tk.messagebox.showinfo("Confirmed", f"You input: {Gammab, Gammat, Gammac} , for Gammab, Gammat and Gammac respectively, thank you!")
+    tk.messagebox.showinfo("Confirmed", f"You input: {Gammab, Gammat, Gammac} , for \u03B3b, \u03B3t and \u03B3c respectively, thank you!")
 
 if __name__ == "__main__":
     main()
@@ -42,8 +42,8 @@ def main():
     root.withdraw()  # Hide the root window
 
     # Prompt the user to input dimensions using a popup window
-    Phib = simpledialog.askfloat("Input", "Enter the value of \u03c6 ' sub b in degrees")
-    Phit = simpledialog.askfloat("Input", "Enter the value of \u03c6 ' sub t in degrees")
+    Phib = simpledialog.askfloat("Input", "Enter the value of \u03c6 'b in degrees")
+    Phit = simpledialog.askfloat("Input", "Enter the value of \u03c6 't in degrees")
 
     # Display the result in a message box
     tk.messagebox.showinfo("Confirmed", f"You input: {Phib, Phit} , for \u03c6 ' sub b and \u03c6 ' sub t respectively, thank you!")
