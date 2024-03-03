@@ -9,6 +9,7 @@ Unless otherwise stated, this code does make the following assumptions that are 
 4. The soil-wall interface is vertical
 5. The soil moves on a planar failure surface
 6. The resultant force is angled parallel to the backfill surface
+7. The soil is homogenous (one layer, no backfill)
 
 Code by @JessikaSolleder with the aid of the following resources:
 
