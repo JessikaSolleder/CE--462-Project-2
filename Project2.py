@@ -79,8 +79,8 @@ def coloumb_pressure():
     
 # Calculate Coulomb horizontal & vertical components of the active earth pressure from above 
 
-    CPv = CPa * np.sin(Alpha)
-    CPh = CPa * np.cos(Alpha)
+    CPv = CPa * np.sin(Alpha_rad)
+    CPh = CPa * np.cos(Alpha_rad)
     
 #####################################################################################################################################
 # ADD AN OUTPUT TABLE AND MAYBE AN IMAGE OR SOMETHING TO WRAP UP COULOMB
@@ -90,8 +90,34 @@ def coloumb_pressure():
 # # See diagram included in GitHub Repository for diagram with sections labeled that will be referenced here # #
 
 # # Forces acting in the vertical direction # #
-Area1 = StemTop * (Height - SlabThickness)
-Area2 = 
-WeightSection1 = GammaConcrete * Area1
+
+Area1 = (0.3 * Height) * (Height - SlabThickness)
+Area2 = 0.5 * ((0.3 * Height) ** 2) * (np.tan(Alpha_rad))
+Area3 = StemTop * (Height - SlabThickness)
+Area4 = 0.5 * (Height * (0.02 * Height))
+Area5 = (0.1 * Height) * (0.5 * Height)
+
+Weight1 = Gamma * Area1
+Weight2 = Gamma * Area2
+Weight3 = GammaConcrete * Area3
+Weight4 = GammaConcrete * Area4 
+Weight5 = GammaConcrete * Area5
+
+VerticalForce1 = Weight1
+VerticalForce2 = Weight2
+VerticalForce3 = Weight3
+VerticalForce4 = Weight4
+VerticalForce5 = Weight5
+
+# None of these sections have forces that act in the horizontal plane #
+
+# Take moment about the center point at the base where the stem meets with the slab, assume CCW = +
+# Moment location (assuming the center of the bottom of the slab is (0,0)).
+# (x,y) = (0.15 * H, 0.1 * H)
+
+MomentArm1 = (0.15 * Height)
+
+MomentArm3 = ((0.1 * Height) - (0.02 * Height)) / 2
+
 if __name__ == "__main__":
     main()
