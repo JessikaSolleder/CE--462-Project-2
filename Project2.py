@@ -59,6 +59,10 @@ def rankine_analysis(SoilHeight, Gamma, Alpha, Phi):
     # Calculate Rankine horizontal & vertical components of the active earth pressure from above
     RPv = RPa * np.sin(Alpha_rad)
     RPh = RPa * np.cos(Alpha_rad)
+    
+#####################################################################################################################################
+# ADD AN OUTPUT TABLE AND MAYBE AN IMAGE OR SOMETHING TO WRAP UP RANKINE
+#####################################################################################################################################
 
 def coloumb_pressure():
     
@@ -78,7 +82,10 @@ def coloumb_pressure():
 
     CPv = CPa * np.sin(Alpha)
     CPh = CPa * np.cos(Alpha)
-
+    
+#####################################################################################################################################
+# ADD AN OUTPUT TABLE AND MAYBE AN IMAGE OR SOMETHING TO WRAP UP COULOMB
+#####################################################################################################################################
 
 if __name__ == "__main__":
     main()
