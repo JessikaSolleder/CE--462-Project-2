@@ -11,7 +11,8 @@ Unless otherwise stated, this code does make the following assumptions that are 
 5. The resultant force is angled parallel to the backfill surface
 6. The soil is homogenous (one layer, no backfill)
 7. Interface friction (Sigma) is equal to the slop of the backfill (Alpha)
-
+8. Counterclockwise Moments are positive
+   
 Users will be able to input values for the following parameters:
 
 1. The Height of the rigid retaining wall (H)
