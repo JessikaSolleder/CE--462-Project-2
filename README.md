@@ -18,7 +18,7 @@ Users will be able to input values for the following parameters:
 2. The unit weight of the soil behind the wall (Gamma)
 3. The angle of internal friction (Phi ')
 4. The angle of the backfill in relation to the top of the retaining wall (Alpha)
-* To enhance th user experience all angles are requested in degrees and are converted to radians by the code
+* To enhance user experience all angles are requested in degrees and are then converted to radians by the program
 
 Code by @JessikaSolleder with the aid of the following resources:
 
