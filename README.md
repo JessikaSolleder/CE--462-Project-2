@@ -10,6 +10,15 @@ Unless otherwise stated, this code does make the following assumptions that are 
 4. The soil moves on a planar failure surface
 5. The resultant force is angled parallel to the backfill surface
 6. The soil is homogenous (one layer, no backfill)
+7. Interface friction (Sigma) is equal to the slop of the backfill (Alpha)
+
+Users will be able to input values for the following parameters:
+
+1. The Height of the rigid retaining wall (H)
+2. The unit weight of the soil behind the wall (Gamma)
+3. The angle of internal friction (Phi ')
+4. The angle of the backfill in relation to the top of the retaining wall (Alpha)
+* To enhance th user experience all angles are requested in degrees and are converted to radians by the code
 
 Code by @JessikaSolleder with the aid of the following resources:
 
