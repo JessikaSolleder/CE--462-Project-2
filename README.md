@@ -1,6 +1,6 @@
 Overview:
 
-This project will explore and test our knowledge of rigid retaining walls. The main focus of this code is to allow for geotechnical external stability checks to be performed for a CIP rigid cantilever retaining structure. Users will be able to input wall geometry and soil properties to test for a wider variety of scenarios. Additionally, this project will help the user determine a factor of safety for their project. This project will also provide a plot of the lateral earth pressure diagram associated with their inputted retaining wall scenario.
+This program allows users to input a variety of parameters (see list below) as it related to their specific Cast-in-Place (C.I.P.) rigid cantilever retaining structure. The purpose of this program is to conduct geotechnical external stability checks, determine an appropriate factor of safety and produce a lateral earth pressure diagram for these structures.
 
 Unless otherwise stated, this code does make the following assumptions that are important to note:
 
