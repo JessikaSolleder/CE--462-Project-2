@@ -42,7 +42,7 @@ def main():
     root.withdraw()  # Hide the root window
 
     # Prompt the user to input dimensions using a popup window
-    Phib = simpledialog.askfloat("Input", "Enter the value of Phi sub b in degrees")
+    Phib = simpledialog.askfloat("Input", "Enter the value of \u03C6 ' (b) in degrees")
     Phit = simpledialog.askfloat("Input", "Enter the value of Phi sub t in degrees")
 
     # Display the result in a message box
