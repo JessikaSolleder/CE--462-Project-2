@@ -42,11 +42,11 @@ def main():
     root.withdraw()  # Hide the root window
 
     # Prompt the user to input dimensions using a popup window
-    Phib = simpledialog.askfloat("Input", "Enter the value of Phi sub b in degrees")
-    Phit = simpledialog.askfloat("Input", "Enter the value of Phi sub t in degrees")
+    Phib = simpledialog.askfloat("Input", "Enter the value of \u03c6 ' sub b in degrees")
+    Phit = simpledialog.askfloat("Input", "Enter the value of \u03c6 ' sub t in degrees")
 
     # Display the result in a message box
-    tk.messagebox.showinfo("Confirmed", f"You input: {Phib, Phit} , for Phi sub b and Phi sub t respectively, thank you!")
+    tk.messagebox.showinfo("Confirmed", f"You input: {Phib, Phit} , for \u03c6 ' sub b and \u03c6 ' sub t respectively, thank you!")
 
 if __name__ == "__main__":
     main()
