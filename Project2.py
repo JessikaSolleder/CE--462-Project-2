@@ -25,59 +25,60 @@ def main():
     Phi = simpledialog.askfloat("Input", "Enter the value of \u03c6 ' in degrees.")
 
 # # Calculating Dimensions of Rigid Retaining Wall Based on User Input of Height # #
-    Stemheight = 1 * Height
-    Stembottom = 0.5 * Height
-    Slabthickness = 0.1 * Height
+    global StemHeight, StemBottom, SlabThickness, Heel, Toe, SoilHeight
+    StemHeight = 1 * Height
+    StemBottom = 0.5 * Height
+    SlabThickness = 0.1 * Height
     Heel = 0.1 * Height
     Toe = 0.3 * Height
-    Height = Slabthickness + Stemheight + Heel + np.tan(Alpha)
+    SoilHeight = SlabThickness + StemHeight + Heel + np.tan(Alpha)
  
    # Perform Rankine Analysis calculations
-    results = rankine_analysis(Height, Gamma, Alpha, Phi)
+    results = rankine_analysis(SoilHeight, Gamma, Alpha, Phi)
 
     # Display the results in a pop-up table
     display_results_table(results)
  
 def rankine_analysis(Height, Gamma, Alpha, Phi):
     # Recall the dimensions of the rigid retaining wall
-    
-    Stemheight = 1 * Height
-    Stembottom = 0.5 * Height
-    Slabthickness = 0.1 * Height
+
+    StemHeight = 1 * Height
+    StemBottom = 0.5 * Height
+    SlabThickness = 0.1 * Height
     Heel = 0.1 * Height
     Toe = 0.3 * Height
-    Soilheight = Slabthickness + Stemheight + Heel
+    SoilHeight = SlabThickness + StemHeight + Heel
     
     # Convert angles from degrees to radians
     Phi_rad= np.radians(Phi)
     Alpha_rad= np.radians(Alpha)
 
     # Calculate the coefficient (Ka) of the active earth pressure using Rakine
-    Rka = (1 - np.sin(Phi_rad)) / (1 + np.sin(Phi_rad))
+    RKa = (1 - np.sin(Phi_rad)) / (1 + np.sin(Phi_rad))
 
     # Calculate Rankine passive earth pressure coefficient (Kp)
-    Rkp = (1 + np.sin(Phi_rad)) / (1 - np.sin(Phi_rad))
+    RKp = (1 + np.sin(Phi_rad)) / (1 - np.sin(Phi_rad))
 
     # Calculate Rankine Lateral Earth Pressures for the active and passive conditions
-    Rpa = 0.5 * Rka * (Gamma * (Height ** 2))
-    Rpp = 0.5 * Rkp * (Gamma * (Height ** 2))
+    RPa = 0.5 * RKa * (Gamma * (SoilHeight ** 2))
+    RPp = 0.5 * RKp * (Gamma * (SoilHeight ** 2))
 
     # Calculate Rankine horizontal & vertical components of the active earth pressure from above
-    Rpv = Rpa * np.sin(Alpha)
-    Rph = Rpa * np.cos(Alpha)
+    RPv = RPa * np.sin(Alpha)
+    RPh = RPa * np.cos(Alpha)
 
   # Return the calculated results
     return {
-        "Stemheight": Stemheight,
-        "Stembottom": Stembottom,
-        "Slabthickness": Slabthickness,
+        "Stemheight": StemHeight,
+        "Stembottom": StemBottom,
+        "Slabthickness": SlabThickness,
         "Heel": Heel,
         "Toe": Toe,
-        "Soilheight": Soilheight,
-        "Rpa": Rpa,
-        "Rpp": Rpp,
-        "Rpv": Rpv,
-        "Rph": Rph
+        "Soilheight": SoilHeight,
+        "Rpa": RPa,
+        "Rpp": RPp,
+        "Rpv": RPv,
+        "Rph": RPh
     }
 
 def display_results_table(results):
@@ -105,13 +106,18 @@ def coloumb_pressure():
 
  # Calculate the coefficient (Ka) of the active earth pressure using Coulomb
  
-    Cka = ((np.cos(Phi)) ** 2) / (np.cos(Alpha)*(1+((np.sin(Phi + Alpha) * (np.sin(Phi - Alpha)))/(np.cos(Alpha)*(np.cos(-Alpha))) ** 0.5) ** 2))
+    CKa = ((np.cos(Phi)) ** 2) / (np.cos(Alpha)*(1+((np.sin(Phi + Alpha) * (np.sin(Phi - Alpha)))/(np.cos(Alpha)*(np.cos(-Alpha))) ** 0.5) ** 2))
 
 # Calculate Coulomb passive earth pressure coefficient (Kp)
 
 # Calculate Coulomb Lateral Earth Pressures for the active and passive conditions
 
+    CPa = 0.5(CKa*Gamma*(SoilHeight ** 2))
+    CPv = CPa * np.sin(Alpha)
+    
 # Calculate Coulomb horizontal & vertical components of the active earth pressure from above 
+
+
 
 
 if __name__ == "__main__":
