@@ -46,7 +46,7 @@ def main():
     Phit = simpledialog.askfloat("Input", "Enter the value of \u03c6 't in degrees")
 
     # Display the result in a message box
-    tk.messagebox.showinfo("Confirmed", f"You input: {Phib, Phit} , for \u03c6 ' sub b and \u03c6 ' sub t respectively, thank you!")
+    tk.messagebox.showinfo("Confirmed", f"You input: {Phib, Phit} , for \u03c6 'b and \u03c6 't respectively, thank you!")
 
 if __name__ == "__main__":
     main()
