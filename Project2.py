@@ -26,16 +26,19 @@ def main():
 # # Calculating Dimensions of Rigid Retaining Wall Based on User Input of Height # #
 
     global StemHeight, SlabBottom, SlabThickness, Heel, Toe, SoilHeight
-    
     StemHeight = 1 * Height
     SlabBottom = 0.5 * Height
     SlabThickness = 0.1 * Height
-    Heel = 0.1 * Height
-    Toe = 0.3 * Height
+    Heel = 0.3 * Height
+    Toe = 0.1 * Height
     SoilHeight = SlabThickness + StemHeight + Heel + np.tan(Alpha)
  
+ 
+    # Call functions for analysis
+    rankine_analysis()
+    coloumb_pressure()
+
 def rankine_analysis(SoilHeight, Gamma, Alpha, Phi):
-    
     global RPv, RPh, RPa, RPa, RKp, RKa, RPp
     
     # Convert angles from degrees to radians
@@ -64,7 +67,6 @@ def rankine_analysis(SoilHeight, Gamma, Alpha, Phi):
 #####################################################################################################################################
 
 def coloumb_pressure():
-    
     global CPv, CPh, CPa, CPa, CKp, CKa, CPp
 
  # Calculate the coefficient (Ka) of the active earth pressure using Coulomb
@@ -93,7 +95,7 @@ def coloumb_pressure():
 # Moment location (assuming the center of the bottom of the slab is (0,0)).
 # (x,y) = (0.15 * H, 0.1 * H)
 
-Area1 = (0.3 * Height) * (Height - SlabThickness)
+Area1 = (Heel) * (Height - SlabThickness)
 Area2 = 0.5 * ((0.3 * Height) ** 2) * (np.tan(Alpha_rad))
 Area3 = StemTop * (Height - SlabThickness)
 Area4 = 0.5 * (Height * (0.02 * Height))
@@ -116,7 +118,7 @@ VerticalForce5 = Weight5
 MomentArm1 = (0.15 * Height)
 MomentArm2 = (2/3) * (0.3 * Height)
 MomentArm3 = ((0.1 * Height) - (0.02 * Height)) / 2
-MomentArm4 = 0.5 ((0.1 * Height) - StemTop) ###### DOUBLE CHECK THIS ONE! #####
+MomentArm4 = 0.5 * ((0.1 * Height) - StemTop) ###### DOUBLE CHECK THIS ONE! #####
 MomentArm5 = (SlabBottom / 2) - (Toe + (0.05 * Height))
 
 Moment1 = VerticalForce1 * MomentArm1
