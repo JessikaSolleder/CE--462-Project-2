@@ -66,7 +66,23 @@ def rankine_coefficients:
     Phi = np.radians(Phi)
     Alpha = np.radians(Alpha)
 
-    # Calculate active earth pressure
+    # Calculate active earth pressure using Rakine
+    Rka = (1 - np.sin(Phi)) / (1 + np.sin(Phi)
+
+    # Calculate Rankine active and passive coefficients
+    Rkp = (1 + np.sin(Phi)) / (1 - np.sin(Phi))
+
+    # Calculate Rankine Lateral Earth Pressure
+    Rpa = 0.5 * Ka * ( Gamma * (Height ** 2))
+    Rpp = 0.5 * Kp * ( Gamma * (Height ** 2))
+
+    # Calculate Rankine horizontal & vertical components of the active earth pressure from above
+    Rpv = Rpa * np.sin(Alpha)
+    Rph = Rpa * np.cos(Alpha)
+
+def coloumb_pressure:
+
+ # Calculate active earth pressure using Coulomb
     Rka = (1 - np.sin(Phi)) / (1 + np.sin(Phi)
 
     # Calculate Rankine active and passive coefficients
@@ -79,7 +95,4 @@ def rankine_coefficients:
     # Calculate Rankine Horizontal & Vertical Components of the Active Earth Pressure from Above
     Rpv = Rpa * np.sin(Alpha)
     Rph = Rpa * np.cos(Alpha)
-
-def coloumb_pressure:
-    
 
