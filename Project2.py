@@ -47,7 +47,7 @@ def rankine_analysis(Height, Gamma, Alpha, Phi):
     SlabThickness = 0.1 * Height
     Heel = 0.1 * Height
     Toe = 0.3 * Height
-    SoilHeight = SlabThickness + StemHeight + Heel
+    SoilHeight = SlabThickness + StemHeight + Heel + np.tan(Alpha)
     
     # Convert angles from degrees to radians
     Phi_rad= np.radians(Phi)
