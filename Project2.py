@@ -28,7 +28,7 @@ def main():
     Toe = 0.3 * Height
     Height = Slabthickness + Stemheight + Heel + np.tan * (Alpha)
  
-    
+ 
 # # Calculating Dimensions of Rigid Retaining Wall Based on User Input of Height # #
 
 import numpy as np
