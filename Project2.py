@@ -32,11 +32,7 @@ def main():
     Heel = 0.3 * Height
     Toe = 0.1 * Height
     SoilHeight = SlabThickness + StemHeight + Heel + np.tan(Alpha)
- 
- 
-    # Call functions for analysis
-    rankine_analysis()
-    coloumb_pressure()
+
 
 def rankine_analysis(SoilHeight, Gamma, Alpha, Phi):
     global RPv, RPh, RPa, RPa, RKp, RKa, RPp
@@ -95,79 +91,80 @@ def coloumb_pressure():
 # Moment location (assuming the center of the bottom of the slab is (0,0)).
 # (x,y) = (0.15 * H, 0.1 * H)
 
-Area1 = (Heel) * (Height - SlabThickness)
-Area2 = 0.5 * ((0.3 * Height) ** 2) * (np.tan(Alpha_rad))
-Area3 = StemTop * (Height - SlabThickness)
-Area4 = 0.5 * (Height * (0.02 * Height))
-Area5 = (0.1 * Height) * (0.5 * Height)
+def overturning_moment ():
+    Area1 = ((Heel) * (Height - SlabThickness))
+    Area2 = 0.5 * ((0.3 * Height) ** 2) * (np.tan(Alpha_rad))
+    Area3 = StemTop * (Height - SlabThickness)
+    Area4 = 0.5 * (Height * (0.02 * Height))
+    Area5 = (0.1 * Height) * (0.5 * Height)
 
-Weight1 = Gamma * Area1
-Weight2 = Gamma * Area2
-Weight3 = GammaConcrete * Area3
-Weight4 = GammaConcrete * Area4 
-Weight5 = GammaConcrete * Area5
-WeightTotal = Weight1 + Weight2 + Weight3 + Weight4 + Weight5
+    Weight1 = Gamma * Area1
+    Weight2 = Gamma * Area2
+    Weight3 = GammaConcrete * Area3
+    Weight4 = GammaConcrete * Area4 
+    Weight5 = GammaConcrete * Area5
+    WeightTotal = Weight1 + Weight2 + Weight3 + Weight4 + Weight5
 
-VerticalForce1 = Weight1
-VerticalForce2 = Weight2
-VerticalForce3 = Weight3
-VerticalForce4 = Weight4
-VerticalForce5 = Weight5
-
-
-MomentArm1 = (0.15 * Height)
-MomentArm2 = (2/3) * (0.3 * Height)
-MomentArm3 = ((0.1 * Height) - (0.02 * Height)) / 2
-MomentArm4 = 0.5 * ((0.1 * Height) - StemTop) ###### DOUBLE CHECK THIS ONE! #####
-MomentArm5 = (SlabBottom / 2) - (Toe + (0.05 * Height))
-
-Moment1 = VerticalForce1 * MomentArm1
-Moment2 = VerticalForce2 * MomentArm2
-Moment3 = VerticalForce3 * MomentArm3
-Moment4 = VerticalForce4 * MomentArm4
-Moment5 = VerticalForce5 * MomentArm5
-MomentSum =  - Moment1 - Moment2 - Moment3 + Moment4 - Moment5
-
-# Rankine: Resisting Moment
-MomentResistR = MomentSum + SlabBottom * RPv
-
-# Rankine: Overturning Moment
-MomentOverturnR = (SoilHeight / 3) * RPh
-
-# Coulomb: Resisting Moment
-MomentResistC = MomentSum + SlabBottom * CPv
-
-# Coulomb: Overturning Moment
-MomentOverturnC = (SoilHeight / 3) * CPh
-
-# Rankine: Overturning FS
-OverturnFSR = MomentResistR / MomentOverturnR
-
-# Coulomb: Overtruning FD
-OverturnFSC = MomentResistC / MomentOverturnC
+    VerticalForce1 = Weight1
+    VerticalForce2 = Weight2
+    VerticalForce3 = Weight3
+    VerticalForce4 = Weight4
+    VerticalForce5 = Weight5
 
 
+    MomentArm1 = (0.15 * Height)
+    MomentArm2 = (2/3) * (0.3 * Height)
+    MomentArm3 = ((0.1 * Height) - (0.02 * Height)) / 2
+    MomentArm4 = 0.5 * ((0.1 * Height) - StemTop) ###### DOUBLE CHECK THIS ONE! #####
+    MomentArm5 = (SlabBottom / 2) - (Toe + (0.05 * Height))
+
+    Moment1 = VerticalForce1 * MomentArm1
+    Moment2 = VerticalForce2 * MomentArm2
+    Moment3 = VerticalForce3 * MomentArm3
+    Moment4 = VerticalForce4 * MomentArm4
+    Moment5 = VerticalForce5 * MomentArm5
+    MomentSum =  - Moment1 - Moment2 - Moment3 + Moment4 - Moment5
+
+    # Rankine: Resisting Moment
+    MomentResistR = MomentSum + SlabBottom * RPv
+
+    # Rankine: Overturning Moment
+    MomentOverturnR = (SoilHeight / 3) * RPh
+
+    # Coulomb: Resisting Moment
+    MomentResistC = MomentSum + SlabBottom * CPv
+
+    # Coulomb: Overturning Moment
+    MomentOverturnC = (SoilHeight / 3) * CPh
+
+    # Rankine: Overturning FS
+    OverturnFSR = MomentResistR / MomentOverturnR
+
+    # Coulomb: Overtruning FD
+    OverturnFSC = MomentResistC / MomentOverturnC
+
+def FS_Sliding():
 #######################################################################
 # FS Sliding
 
 # Rankine: Sliding FS Check
-SigmaR = (3/4) * (Phi) # Interface friction between the concrete and the base soil
-SlidingFSR = (WeightTotal * np.tan(SigmaR)) / (RPh)
+    SigmaR = (3/4) * (Phi) # Interface friction between the concrete and the base soil
+    SlidingFSR = (WeightTotal * np.tan(SigmaR)) / (RPh)
 
-# Coulomb: Sliding FS Check
-SigmaC = (3/4) * (Phi) # Interface friction between the concrete and the base soil
-SlidingFSC = (WeightTotal * np.tan(SigmaC)) / (CPh)
+    # Coulomb: Sliding FS Check
+    SigmaC = (3/4) * (Phi) # Interface friction between the concrete and the base soil
+    SlidingFSC = (WeightTotal * np.tan(SigmaC)) / (CPh)
 
-##############################################################################
-# Bearing Capacity
+    ##############################################################################
+    # Bearing Capacity
 
-import math
+    import math
 
-# Access Euler's number
-euler_number = math.e
-pi_value = math.pi
+    # Access Euler's number
+    euler_number = math.e
+    pi_value = math.pi
 
-NqR = (math.e ** (2 * (((3 * math.pi)/4) - (0.5 * Phi))* np.tan(Phi))) / (2 * (np.cos (45 + (Phi/2))) ** 2)
+    NqR = (math.e ** (2 * (((3 * math.pi)/4) - (0.5 * Phi))* np.tan(Phi))) / (2 * (np.cos (45 + (Phi/2))) ** 2)
 
 
 if __name__ == "__main__":
