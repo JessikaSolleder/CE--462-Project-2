@@ -10,7 +10,7 @@ Unless otherwise stated, this code does make the following assumptions that are 
 5. The soil moves on a planar failure surface
 6. The resultant force is angled parallel to the backfill surface
 
-All code was done by @JessikaSolleder with the aid of the following resources:
+Code by @JessikaSolleder with the aid of the following resources:
 
 OpenAI. (Year). GPT-3 Language Model [Computer software]. Retrieved from https://openai.com/gpt-3
 
