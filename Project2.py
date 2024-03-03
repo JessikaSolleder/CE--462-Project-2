@@ -104,6 +104,7 @@ Weight2 = Gamma * Area2
 Weight3 = GammaConcrete * Area3
 Weight4 = GammaConcrete * Area4 
 Weight5 = GammaConcrete * Area5
+WeightTotal = Weight1 + Weight2 + Weight3 + Weight4 + Weight5
 
 VerticalForce1 = Weight1
 VerticalForce2 = Weight2
@@ -133,8 +134,38 @@ MomentOverturnR = (SoilHeight / 3) * RPh
 
 # Coulomb: Resisting Moment
 MomentResistC = MomentSum + SlabBottom * CPv
-MomentOverturnc = (SoilHeight / 3) * CPh
 
+# Coulomb: Overturning Moment
+MomentOverturnC = (SoilHeight / 3) * CPh
+
+# Rankine: Overturning FS
+OverturnFSR = MomentResistR / MomentOverturnR
+
+# Coulomb: Overtruning FD
+OverturnFSC = MomentResistC / MomentOverturnC
+
+
+#######################################################################
+# FS Sliding
+
+# Rankine: Sliding FS Check
+SigmaR = (3/4) * (Phi) # Interface friction between the concrete and the base soil
+SlidingFSR = (WeightTotal * np.tan(SigmaR)) / (RPh)
+
+# Coulomb: Sliding FS Check
+SigmaC = (3/4) * (Phi) # Interface friction between the concrete and the base soil
+SlidingFSC = (WeightTotal * np.tan(SigmaC)) / (CPh)
+
+##############################################################################
+# Bearing Capacity
+
+import math
+
+# Access Euler's number
+euler_number = math.e
+pi_value = math.pi
+
+NqR = (math.e ** (2 * (((3 * math.pi)/4) - (0.5 * Phi))* np.tan(Phi))) / (2 * (np.cos (45 + (Phi/2))) ** 2)
 
 
 if __name__ == "__main__":
