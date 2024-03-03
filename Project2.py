@@ -112,7 +112,7 @@ def coloumb_pressure():
 
 # Calculate Coulomb Lateral Earth Pressures for the active and passive conditions
 
-    CPa = 0.5(CKa*Gamma*(SoilHeight ** 2))
+    CPa = 0.5 * (CKa*Gamma*(SoilHeight ** 2))
     CPv = CPa * np.sin(Alpha)
     
 # Calculate Coulomb horizontal & vertical components of the active earth pressure from above 
