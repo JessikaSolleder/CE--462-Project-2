@@ -1,3 +1,7 @@
+#############################################################
+            # # Assumptions for this Project: # #
+#############################################################
+
 # # WALL GEOMETRY # #
 # GIVEN:
 
@@ -13,7 +17,7 @@ def main():
     root = tk.Tk()
     root.withdraw()  # Hide the root window
 
-    # Prompt the user to input dimensions using a popup window
+    # Prompt the user to input dimensions using a pop up window
     Height = simpledialog.askfloat("Input", "Enter the height of the stem (H) in feet.")
 
     # Display the result in a message box
