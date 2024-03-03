@@ -52,7 +52,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-
+# # Calculating Dimensions of Rigid Retaining Wall Based on User Input of Height # #
 Stemheight = 1 * Height
 Stembottom = 0.5 * Height
 Slabthickness = 0.1 * Height
