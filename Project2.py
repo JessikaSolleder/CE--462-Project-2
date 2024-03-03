@@ -1,3 +1,7 @@
+import tkinter as tk
+from tkinter import messagebox
+import numpy as np
+
 # # WALL GEOMETRY # #
 # Constant Dimensions (in Feet):
 
@@ -20,48 +24,82 @@ def main():
     Alpha = simpledialog.askfloat("Input", "Enter the value of \u03B1 in degrees.")
     Phi = simpledialog.askfloat("Input", "Enter the value of \u03c6 ' in degrees.")
 
-
-    Stemheight = 1 * Height
-    Stembottom = 0.5 * Height
-    Slabthickness = 0.1 * Height
-    Heel = 0.1 * Height
-    Toe = 0.3 * Height
-    Height = Slabthickness + Stemheight + Heel + np.tan * (Alpha)
- 
- 
 # # Calculating Dimensions of Rigid Retaining Wall Based on User Input of Height # #
-
-import numpy as np
-import matplotlib.pyplot as plt
-
-def rankine_coefficients():
-
-    # Convert angles from degrees to radians
-    Phi = np.radians(Phi)
-    Alpha = np.radians(Alpha)
-
     Stemheight = 1 * Height
     Stembottom = 0.5 * Height
     Slabthickness = 0.1 * Height
     Heel = 0.1 * Height
     Toe = 0.3 * Height
     Height = Slabthickness + Stemheight + Heel + np.tan * (Alpha)
+ 
+   # Perform Rankine Analysis calculations
+    results = rankine_analysis(Height, Gamma, Alpha, Phi)
+
+    # Display the results in a pop-up table
+    display_results_table(results)
+ 
+def rankine_analysis(Height, Gamma, Alpha, Phi):
+    # Recall the dimensions of the rigid retaining wall
     
+    Stemheight = 1 * Height
+    Stembottom = 0.5 * Height
+    Slabthickness = 0.1 * Height
+    Heel = 0.1 * Height
+    Toe = 0.3 * Height
+    Soilheight = Slabthickness + Stemheight + Heel
+    
+    # Convert angles from degrees to radians
+    Phi_rad= np.radians(Phi)
+    Alpha_rad= np.radians(Alpha)
 
     # Calculate the coefficient (Ka) of the active earth pressure using Rakine
-    Rka = (1 - np.sin(Phi)) / (1 + np.sin(Phi))
+    Rka = (1 - np.sin(Phi_rad)) / (1 + np.sin(Phi_rad))
 
     # Calculate Rankine passive earth pressure coefficient (Kp)
-    Rkp = (1 + np.sin(Phi)) / (1 - np.sin(Phi))
+    Rkp = (1 + np.sin(Phi_rad)) / (1 - np.sin(Phi_rad))
 
     # Calculate Rankine Lateral Earth Pressures for the active and passive conditions
-    Rpa = 0.5 * Rka * ( Gamma * (Height ** 2))
-    Rpp = 0.5 * Rkp * ( Gamma * (Height ** 2))
+    Rpa = 0.5 * Rka * (Gamma * (Height ** 2))
+    Rpp = 0.5 * Rkp * (Gamma * (Height ** 2))
 
     # Calculate Rankine horizontal & vertical components of the active earth pressure from above
     Rpv = Rpa * np.sin(Alpha)
     Rph = Rpa * np.cos(Alpha)
-    
+
+  # Return the calculated results
+    return {
+        "Stemheight": Stemheight,
+        "Stembottom": Stembottom,
+        "Slabthickness": Slabthickness,
+        "Heel": Heel,
+        "Toe": Toe,
+        "Soilheight": Soilheight,
+        "Rpa": Rpa,
+        "Rpp": Rpp,
+        "Rpv": Rpv,
+        "Rph": Rph
+    }
+
+def display_results_table(results):
+    # Create a new Tkinter window
+    popup_window = tk.Toplevel()
+    popup_window.title("Rankine Analysis Results")
+
+    # Create labels for table headers
+    headers = ["Parameter", "Value"]
+    for i, header in enumerate(headers):
+        header_label = tk.Label(popup_window, text=header, font=("Arial", 12, "bold"), borderwidth=1, relief="solid")
+        header_label.grid(row=0, column=i, padx=5, pady=5)
+
+    # Create labels for each result
+    row = 1
+    for key, value in results.items():
+        parameter_label = tk.Label(popup_window, text=key, borderwidth=1, relief="solid")
+        parameter_label.grid(row=row, column=0, padx=5, pady=5)
+        value_label = tk.Label(popup_window, text=value, borderwidth=1, relief="solid")
+        value_label.grid(row=row, column=1, padx=5, pady=5)
+        row += 1
+
     
 def coloumb_pressure():
 
