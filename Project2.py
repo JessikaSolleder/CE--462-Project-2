@@ -14,15 +14,13 @@ def main():
     root.withdraw()  # Hide the root window
 
     # Prompt the user to input dimensions using a pop up window
-    Height = simpledialog.askfloat("Input", "Enter the height of the stem (H) in feet.")
+    Heightinput = simpledialog.askfloat("Input", "Enter the height of the stem (H) in feet.")
 
     # Display the result in a message box
-    tk.messagebox.showinfo("Confirmed", f"You input: {Height} !")
+    tk.messagebox.showinfo("Confirmed", f"You input: {Heightinput}!")
 
 if __name__ == "__main__":
     main()
-    
-
 
 def main():
     root = tk.Tk()
@@ -32,7 +30,7 @@ def main():
     Gamma = simpledialog.askfloat("Input", "Enter the value of \u03B3b in lbs/cubic foot.")
     Alpha = simpledialog.askfloat("Input", "Enter the value of \u03B1 in degrees." )
     # Display the result in a message box
-    tk.messagebox.showinfo("Confirmed", f"You input: {Gamma } , for \u03B3 !")
+    tk.messagebox.showinfo("Confirmed", f"You input: {Gamma } for \u03B3 !")
 
 if __name__ == "__main__":
     main()
@@ -57,7 +55,7 @@ Stembottom = 0.5 * Height
 Slabthickness = 0.1 * Height
 Heel = 0.1 * Height
 Toe = 0.3 * Height
-
+Soilheight = Slabthickness + Stemheight + Heel + tan (Alpha)
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -76,12 +74,11 @@ def rankine_coefficients:
 
     # Calculate Rankine Lateral Earth Pressure
     Rpa = 0.5 * Ka * ( Gamma * (Height ** 2))
-    Rpp = 0.5 * Kp * ( Gamma * (Height **2))
+    Rpp = 0.5 * Kp * ( Gamma * (Height ** 2))
 
-    # Calculate Rankine Horizontal & Vertical Components of Rpa
+    # Calculate Rankine Horizontal & Vertical Components of the Active Earth Pressure from Above
     Rpv = Rpa * np.sin(Alpha)
     Rph = Rpa * np.cos(Alpha)
-      
 
 def coloumb_pressure:
     
