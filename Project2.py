@@ -1,19 +1,18 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import simpledialog
 import numpy as np
 
-# # WALL GEOMETRY # #
-# Constant Dimensions (in Feet):
-
-StemTop = 1
-D = 2
-StemSlope = 1/0.02
-
-import tkinter as tk
-from tkinter import simpledialog
-
-
 def main():
+
+# # WALL GEOMETRY # #
+    # Constants
+    global GammaConcrete, StemTop, Depth, StemSlope
+    GammaConcrete = 150 # pcf
+    StemTop = 1 # ft
+    Depth = 2 # ft
+    StemSlope = 1/0.02 # unitless
+
     root = tk.Tk()
     root.withdraw()  # Hide the root window
 
@@ -87,5 +86,12 @@ def coloumb_pressure():
 # ADD AN OUTPUT TABLE AND MAYBE AN IMAGE OR SOMETHING TO WRAP UP COULOMB
 #####################################################################################################################################
 
+# # Overturning Calculations # #
+# # See diagram included in GitHub Repository for diagram with sections labeled that will be referenced here # #
+
+# # Forces acting in the vertical direction # #
+Area1 = StemTop * (Height - SlabThickness)
+Area2 = 
+WeightSection1 = GammaConcrete * Area1
 if __name__ == "__main__":
     main()
