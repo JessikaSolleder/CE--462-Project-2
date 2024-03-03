@@ -25,10 +25,10 @@ def main():
 
 # # Calculating Dimensions of Rigid Retaining Wall Based on User Input of Height # #
 
-    global StemHeight, StemBottom, SlabThickness, Heel, Toe, SoilHeight
+    global StemHeight, SlabBottom, SlabThickness, Heel, Toe, SoilHeight
     
     StemHeight = 1 * Height
-    StemBottom = 0.5 * Height
+    SlabBottom = 0.5 * Height
     SlabThickness = 0.1 * Height
     Heel = 0.1 * Height
     Toe = 0.3 * Height
@@ -88,8 +88,10 @@ def coloumb_pressure():
 
 # # Overturning Calculations # #
 # # See diagram included in GitHub Repository for diagram with sections labeled that will be referenced here # #
-
-# # Forces acting in the vertical direction # #
+# # Calculating Moments Originating from Structure # #
+# Take moment about the center point at the base where the stem meets with the slab, assume CCW = +
+# Moment location (assuming the center of the bottom of the slab is (0,0)).
+# (x,y) = (0.15 * H, 0.1 * H)
 
 Area1 = (0.3 * Height) * (Height - SlabThickness)
 Area2 = 0.5 * ((0.3 * Height) ** 2) * (np.tan(Alpha_rad))
@@ -109,15 +111,31 @@ VerticalForce3 = Weight3
 VerticalForce4 = Weight4
 VerticalForce5 = Weight5
 
-# None of these sections have forces that act in the horizontal plane #
-
-# Take moment about the center point at the base where the stem meets with the slab, assume CCW = +
-# Moment location (assuming the center of the bottom of the slab is (0,0)).
-# (x,y) = (0.15 * H, 0.1 * H)
 
 MomentArm1 = (0.15 * Height)
-
+MomentArm2 = (2/3) * (0.3 * Height)
 MomentArm3 = ((0.1 * Height) - (0.02 * Height)) / 2
+MomentArm4 = 0.5 ((0.1 * Height) - StemTop) ###### DOUBLE CHECK THIS ONE! #####
+MomentArm5 = (SlabBottom / 2) - (Toe + (0.05 * Height))
+
+Moment1 = VerticalForce1 * MomentArm1
+Moment2 = VerticalForce2 * MomentArm2
+Moment3 = VerticalForce3 * MomentArm3
+Moment4 = VerticalForce4 * MomentArm4
+Moment5 = VerticalForce5 * MomentArm5
+MomentSum =  - Moment1 - Moment2 - Moment3 + Moment4 - Moment5
+
+# Rankine: Resisting Moment
+MomentResistR = MomentSum + SlabBottom * RPv
+
+# Rankine: Overturning Moment
+MomentOverturnR = (SoilHeight / 3) * RPh
+
+# Coulomb: Resisting Moment
+MomentResistC = MomentSum + SlabBottom * CPv
+MomentOverturnc = (SoilHeight / 3) * CPh
+
+
 
 if __name__ == "__main__":
     main()
