@@ -20,6 +20,8 @@ Users will be able to input values for the following parameters:
 4. The angle of the backfill in relation to the top of the retaining wall (Alpha)
 * To enhance user experience all angles are requested in degrees and are then converted to radians by the program
 
+ADD IN AN OUTLINE AND WHERE/ WHEN TO REFERENCE MATERIALS ABOVE
+
 Code by @JessikaSolleder with the aid of the following resources:
 
 OpenAI. (Year). GPT-3 Language Model [Computer software]. Retrieved from https://openai.com/gpt-3
