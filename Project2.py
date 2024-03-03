@@ -33,12 +33,6 @@ def main():
     Toe = 0.3 * Height
     SoilHeight = SlabThickness + StemHeight + Heel + np.tan(Alpha)
  
-   # Perform Rankine Analysis calculations
-    results = rankine_analysis(SoilHeight, Gamma, Alpha, Phi)
-
-    # Display the results in a pop-up table
-    display_results_table(results)
- 
 def rankine_analysis(Height, Gamma, Alpha, Phi):
     # Recall the dimensions of the rigid retaining wall
 
@@ -64,44 +58,9 @@ def rankine_analysis(Height, Gamma, Alpha, Phi):
     RPp = 0.5 * RKp * (Gamma * (SoilHeight ** 2))
 
     # Calculate Rankine horizontal & vertical components of the active earth pressure from above
-    RPv = RPa * np.sin(Alpha)
-    RPh = RPa * np.cos(Alpha)
+    RPv = RPa * np.sin(Alpha_rad)
+    RPh = RPa * np.cos(Alpha_rad)
 
-  # Return the calculated results
-    return {
-        "Stemheight": StemHeight,
-        "Stembottom": StemBottom,
-        "Slabthickness": SlabThickness,
-        "Heel": Heel,
-        "Toe": Toe,
-        "Soilheight": SoilHeight,
-        "Rpa": RPa,
-        "Rpp": RPp,
-        "Rpv": RPv,
-        "Rph": RPh
-    }
-
-def display_results_table(results):
-    # Create a new Tkinter window
-    popup_window = tk.Toplevel()
-    popup_window.title("Rankine Analysis Results")
-
-    # Create labels for table headers
-    headers = ["Parameter", "Value"]
-    for i, header in enumerate(headers):
-        header_label = tk.Label(popup_window, text=header, font=("Arial", 12, "bold"), borderwidth=1, relief="solid")
-        header_label.grid(row=0, column=i, padx=5, pady=5)
-
-    # Create labels for each result
-    row = 1
-    for key, value in results.items():
-        parameter_label = tk.Label(popup_window, text=key, borderwidth=1, relief="solid")
-        parameter_label.grid(row=row, column=0, padx=5, pady=5)
-        value_label = tk.Label(popup_window, text=value, borderwidth=1, relief="solid")
-        value_label.grid(row=row, column=1, padx=5, pady=5)
-        row += 1
-
-    
 def coloumb_pressure():
 
  # Calculate the coefficient (Ka) of the active earth pressure using Coulomb
