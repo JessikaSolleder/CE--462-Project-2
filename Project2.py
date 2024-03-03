@@ -30,7 +30,7 @@ def main():
     Slabthickness = 0.1 * Height
     Heel = 0.1 * Height
     Toe = 0.3 * Height
-    Height = Slabthickness + Stemheight + Heel + np.tan * (Alpha)
+    Height = Slabthickness + Stemheight + Heel + np.tan(Alpha)
  
    # Perform Rankine Analysis calculations
     results = rankine_analysis(Height, Gamma, Alpha, Phi)
