@@ -70,7 +70,7 @@ def coloumb_pressure():
     global CPv, CPh, CPa, CPa, CKp, CKa, CPp
 
  # Calculate the coefficient (Ka) of the active earth pressure using Coulomb
-    CKa = ((np.cos(Phi)) ** 2) / (np.cos(Alpha)*(1+((np.sin(Phi + Alpha) * (np.sin(Phi - Alpha)))/(np.cos(Alpha)*(np.cos(-Alpha))) ** 0.5) ** 2))
+    CKa = ((np.cos(Phi_rad)) ** 2) / (np.cos(Alpha_rad)*(1+((np.sin(Phi_rad + Alpha_rad) * (np.sin(Phi_rad - Alpha_rad)))/(np.cos(Alpha_rad)*(np.cos(-Alpha_rad))) ** 0.5) ** 2))
 
  # Calculate the coefficient (Kp) of the passive earth pressure using Coulomb
     CKp = (1 + np.sin(Phi_rad)) / (1 - np.sin(Phi_rad))
