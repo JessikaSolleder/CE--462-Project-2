@@ -30,7 +30,7 @@ def main():
 
     # Prompt the user to input dimensions using a popup window
     Gamma = simpledialog.askfloat("Input", "Enter the value of \u03B3b in lbs/cubic foot.")
-
+    Alpha = simpledialog.askfloat("Input", "Enter the value of \u03B1 in degrees." )
     # Display the result in a message box
     tk.messagebox.showinfo("Confirmed", f"You input: {Gamma } , for \u03B3 !")
 
@@ -42,14 +42,16 @@ def main():
     root.withdraw()  # Hide the root window
 
     # Prompt the user to input dimensions using a popup window
-    Phi = simpledialog.askfloat("Input", "Enter the value of \u03c6 in degrees")
+    Phi = simpledialog.askfloat("Input", "Enter the value of \u03c6 ' in degrees.")
 
     # Display the result in a message box
-    tk.messagebox.showinfo("Confirmed", f"You input: {Phi , for \u03c6 respectively, thank you!")
+    tk.messagebox.showinfo("Confirmed", f"You input: {Phi} for \u03c6 !")
 
 if __name__ == "__main__":
     main()
+    
 # # Calculating Dimensions of Rigid Retaining Wall Based on User Input of Height # #
+
 Stemheight = 1 * Height
 Stembottom = 0.5 * Height
 Slabthickness = 0.1 * Height
@@ -60,66 +62,27 @@ Toe = 0.3 * Height
 import numpy as np
 import matplotlib.pyplot as plt
 
-def rankine_pressure(depth, gamma, phi, delta):
-    """
-    Calculate lateral earth pressure using Rankine theory.
+def rankine_coefficients:
 
-    Args:
-    depth (numpy.ndarray): Array of depths of the soil surface from the ground surface (positive downwards) in meters.
-    gamma (float): Unit weight of soil in kN/m^3.
-    phi (float): Angle of internal friction of soil in degrees.
-    delta (float): Angle of wall inclination in degrees.
-
-    Returns:
-    numpy.ndarray: Array of lateral earth pressure in kN/m^2 corresponding to each depth.
-    """
     # Convert angles from degrees to radians
-    phi = np.radians(phi)
-    delta = np.radians(delta)
+    Phi = np.radians(Phi)
+    Alpha = np.radians(Alpha)
 
-    # Calculate lateral earth pressure
-    K = 1 - np.sin(phi)
-    pressure = gamma * depth * K * np.cos(delta)
+    # Calculate active earth pressure
+    Rka = (1 - np.sin(Phi)) / (1 + np.sin(Phi)
 
-    return pressure
+    # Calculate Rankine active and passive coefficients
+    Rkp = (1 + np.sin(Phi)) / (1 - np.sin(Phi))
 
-def plot_pressure(depth, pressure):
+    # Calculate Rankine Lateral Earth Pressure
+    Rpa = 0.5 * Ka * ( Gamma * (Height ** 2))
+    Rpp = 0.5 * Kp * ( Gamma * (Height **2))
+
+    # Calculate Rankine Horizontal & Vertical Components of Rpa
+    Rpv = Rpa * np.sin(Alpha)
+    Rph = Rpa * np.cos(Alpha)
+      
+
+def coloumb_pressure:
     
-    # # Plot lateral earth pressure distribution.
 
-    # Args:
-    # depth (numpy.ndarray): Array of depths of the soil surface from the ground surface (positive downwards) in meters.
-    # pressure (numpy.ndarray): Array of lateral earth pressure in kN/m^2 corresponding to each depth.
-    
-    plt.figure(figsize=(8, 6))
-    plt.plot(pressure, depth, color='blue', linewidth=2)
-    plt.xlabel('Lateral Earth Pressure (kN/m²)')
-    plt.ylabel('Depth (m)')
-    plt.title('Lateral Earth Pressure Distribution')
-    plt.grid(True)
-    plt.gca().invert_yaxis()  # Invert y-axis to show depth increasing downwards
-    plt.show()
-
-def main():
-    # Define parameters
-    depth = np.linspace(0, 10, 100)  # Depths from 0 to 10 meters
-    gamma = 18.5  # Unit weight of soil (kN/m^3)
-    phi = 30  # Angle of internal friction of soil (degrees)
-    
-import math
-
-slope = 1 / 0.02
-delta = math.atan(slope)
-delta_degrees = math.degrees(delta)
-print("Angle of inclination (delta) in radians:", delta)
-print("Angle of inclination (delta) in degrees:", delta_degrees)
-# Angle of wall inclination (degrees)
-
-# Calculate lateral earth pressure using Rankine theory
-lateral_pressure = rankine_pressure(depth, gamma, phi, delta)
-
-    # Plot lateral earth pressure distribution
-plot_pressure(depth, lateral_pressure)
-
-if __name__ == "__main__":
-    main()
