@@ -91,7 +91,9 @@ def coloumb_pressure():
 # Moment location (assuming the center of the bottom of the slab is (0,0)).
 # (x,y) = (0.15 * H, 0.1 * H)
 
-def overturning_moment ():
+def overturning_moment (Height, Gamma, GammaConcrete, Heel, SoilHeight, SlabThickness, StemTop, Alpha_rad):
+    global WeightTotal, OverturnFSR, OverturnFSC
+    
     Area1 = ((Heel) * (Height - SlabThickness))
     Area2 = 0.5 * ((0.3 * Height) ** 2) * (np.tan(Alpha_rad))
     Area3 = StemTop * (Height - SlabThickness)
@@ -142,6 +144,7 @@ def overturning_moment ():
 
     # Coulomb: Overtruning FD
     OverturnFSC = MomentResistC / MomentOverturnC
+    
 
 def FS_Sliding():
 #######################################################################
