@@ -203,7 +203,7 @@ def Bearing_Capacity():
     
 def Schmertmann():
     
-    global Es1, Es2, Es3, Es4, Hc1, Hc2, Hc3, Hc4
+    global Es1, Es2, Es3, Es4, Hc1, Hc2, Hc3, Hc4, Iz, t
     
     p = qeq #psf
     Po = Depth * Gamma #psf
@@ -222,7 +222,9 @@ def Schmertmann():
     Hc3 = simpledialog.askfloat("Input", "Enter the thickness of soil layer 3 in feet.") #ft
     Hc4 = simpledialog.askfloat("Input", "Enter the thickness of soil layer 4 in feet.") #ft
     
-    Iz1 = 0.5 + 0.1 * (DeltaP / Pop) ** 0.5
+    Iz = 0.5 + 0.1 * (DeltaP / Pop) ** 0.5
+    
+    t = simpledialog.askfloat("Input", "Enter the number of years you want the settlement to be evaluated for.")
     
 
 
