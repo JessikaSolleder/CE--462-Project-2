@@ -13,6 +13,17 @@ stem_top = 1 # ft
 slab_depth = 2 # ft
 stem_slope = 1/0.02 # unitless
 
+def main_program():
+    
+    user_input()
+    rankine_analysis(soil_height, gamma, alpha, phi)
+    coloumb_analysis()
+    # Add other function calls and print statements as necessary
+    overturning_moment(height, gamma, gamma_concrete, heel, soil_height, slab_thickness, stem_top, alpha_rad)
+    FS_Sliding()
+    qmin_qmax_qeq()
+    Bearing_Capacity()
+    Schmertmann_Method()
 
 def user_input():
  
@@ -291,6 +302,15 @@ if __name__ == "__main__":
     print("Schmertmann's Method: C2: ", c_2)
     print("Schmertmann's Method: Immediate Settlement in Feet ", S_i)
 
-    #End Program
-    print()
-    input("Press Enter to close...")  
+ 
+continue_program = True
+while continue_program:
+        main_program()
+        root = tk.Tk()
+        root.withdraw()  # Hide the root window
+        # Ask user if they want to rerun the program
+        user_choice = messagebox.askyesno("Continue", "Would you like to rerun the program with new inputs?")
+        if not user_choice:
+            continue_program = False
+        root.destroy()
+        
