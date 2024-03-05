@@ -185,20 +185,21 @@ def qmin_qmax():
     qmax = (VerticalForceSum / SlabBottom) * (1 + ((6 * np.exp)/SlabBottom)) #psf
         
 
-
 def Bearing_Capacity():
     ##############################################################################
     # Bearing Capacity, values will be the same whether user prefered to use Rankine 
     # or Coulomb above
-    global Nq, Nc, Ngamma, q, Bprime
+    global Nq, Nc, Ngamma, q, Bprime, qult_terz
     
+    cprime = 0 # we are assuming there is no cohesion
     Nq = np.exp(np.pi * np.tan(Phi_rad)) * np.tan(np.radians(45) + Phi_rad / 2) ** 2
     Nc = (Nq - 1) * np.cot(Phi_rad)
     Ngamma = 2 * (Nq + 1) * np.tan(Phi_rad)
     
     q = Depth * Gamma #psf
-    
     Bprime = SlabBottom - 2 * np.exp #ft
+    qult_terz = (cprime * Nc) + (q * Nq) + (0.5 * Gamma * Bprime * Ngamma) #psf
+    
     
    
 
