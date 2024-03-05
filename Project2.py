@@ -34,7 +34,7 @@ def user_input():
     slab_thickness = 0.1 * height
     heel = 0.3 * height
     toe = 0.1 * height
-    soil_height = slab_thickness + stem_height + heel + np.tan(alpha)
+    soil_height = slab_thickness + stem_height + heel + np.tan(alpha_rad)
 
 
 def rankine_analysis(soil_height, gamma, alpha, phi):
@@ -207,12 +207,53 @@ def Bearing_Capacity():
     
     q = slab_depth * gamma #psf
     B_prime = slab_bottom - 2 * np.exp #ft
-    qult_terz = (c_prime * Nc) + (q * Nq) + (0.5 * gamma * B_prime * N_gamma) #psf
+    q_ult_terz = (c_prime * Nc) + (q * Nq) + (0.5 * gamma * B_prime * N_gamma) #psf
     bearing_capacity_FS = (q_ult_terz / q_max) # elected to use the trapezoidal max stress (qult_terz / qmax)
+    
+def display_results(rankine_results, coulomb_results):
+    """
+    Displays results from Rankine and Coulomb analyses in a pop-up table.
+
+    Args:
+        rankine_results (dict): Dictionary containing Rankine analysis results.
+        coulomb_results (dict): Dictionary containing Coulomb analysis results.
+    """
+
+    root = tk.Tk()
+    root.withdraw()  # Hide the root window
+    
+    # Convert sets to dictionaries if necessary
+    if isinstance(rankine_results, set):
+        rankine_results = dict(rankine_results)
+    if isinstance(coulomb_results, set):
+        coulomb_results = dict(coulomb_results)
+
+    # Extract data from dictionaries
+    rankine_sliding_fs = rankine_results["sliding_fs"]
+    rankine_overturning_fs = rankine_results["overturning_fs"]
+    rankine_bearing_capacity_fs = rankine_results["bearing_capacity_fs"]
+
+    coulomb_sliding_fs = coulomb_results["sliding_fs"]
+    coulomb_overturning_fs = coulomb_results["overturning_fs"]
+    coulomb_bearing_capacity_fs = coulomb_results["bearing_capacity_fs"]
+
+    # Create table content
+    table_data = [
+        ["Analysis", "Sliding FS", "Overturning FS", "Bearing Capacity FS"],
+        ["Rankine", rankine_sliding_fs, rankine_overturning_fs, rankine_bearing_capacity_fs],
+        ["Coulomb", coulomb_sliding_fs, coulomb_overturning_fs, coulomb_bearing_capacity_fs],
+    ]
+
+    # Create messagebox with table
+    messagebox.showinfo(
+        "Results Summary",
+        message="\n".join([str(row) for row in table_data]),
+    )
+
     
 def Schmertmann():
     
-    global Es_1, Es_2, Es_3, Es_4, Hc_1, Hc_2, Hc_3, Hc_4, Iz, t, c1, c2, delta_Hi_1, delta_Hi_2, delta_Hi_3, delta_Hi_4, delta_Hi_sum
+    global Es_1, Es_2, Es_3, Es_4, Hc_1, Hc_2, Hc_3, Hc_4, Iz, t, c_1, c_2, delta_Hi_1, delta_Hi_2, delta_Hi_3, delta_Hi_4, delta_Hi_sum
     
     p = q_eq #psf
     p_o = slab_depth * gamma #psf
@@ -253,3 +294,7 @@ if __name__ == "__main__":
 
     rankine_analysis(soil_height, gamma, alpha, phi)
     input("Press Enter to close...")  # Pause execution to see the plot
+    
+    rankine_results = {...}  # populate with Rankine results
+    coulomb_results = {...}  # populate with Coulomb results
+    display_results(rankine_results, coulomb_results)
