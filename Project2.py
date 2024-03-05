@@ -18,7 +18,6 @@ def user_input():
  
     root = tk.Tk()
     root.withdraw()  # Hide the root window
-
     # Prompt the user to input dimensions using a pop up window
     
     global height, gamma, alpha, phi, alpha_rad
@@ -207,7 +206,7 @@ def Bearing_Capacity():
     bearing_capacity_FS = (q_ult_terz / (vertical_force_sum / slab_bottom) * (1 + ((6 * math.e)/slab_bottom)) ) # elected to use the trapezoidal max stress (qult_terz / qmax)
     
     
-def Schmertmann():
+def Schmertmann_Method():
     
     global Es_1, Es_2, Es_3, Es_4, Hc_1, Hc_2, Hc_3, Hc_4, Iz, t, c_1, c_2, delta_Hi_1, delta_Hi_2, delta_Hi_3, delta_Hi_4, delta_Hi_sum,S_i
     
@@ -242,7 +241,7 @@ def Schmertmann():
     c_1 = 1 - 0.5 * (p_o / delta_p) # >=0.5
     c_2 = 1 + 0.2 * np.log10(t/0.1)
     
-    S_i = c_1 * c_2 * delta_p * delta_Hi_sum #feet
+    S_i = (c_1 * c_2 * delta_p) * delta_Hi_sum #feet
     
 if __name__ == "__main__":
     user_input()
@@ -250,15 +249,16 @@ if __name__ == "__main__":
     # root.withdraw()  
 
     rankine_analysis(soil_height, gamma, alpha, phi)
-    coloumb_analysis()  # This needs to be called before accessing CPv or CPh
-
- 
+    
+    coloumb_analysis()
     print("Rankine: Vertical Component of Active Earth Pressure: ", RPv)
     print("Rankine: Horizontal Component of Active Earth Pressure: ", RPh)
     print("Coulomb: Vertical Component of Active Earth Pressure:", CPv)
     print("Coulomb: Horizontal Component of Active Earth Pressure:", CPh)
     
     overturning_moment (height, gamma, gamma_concrete, heel, soil_height, slab_thickness, stem_top, alpha_rad)
+    
+    print()
     print("Rankine: Total Resisting Moment: ", moment_resist_R)
     print("Rankine: Total Overturning Moment: ", moment_overturn_R)
     print("Rankine: Overturning Moment FS: ", overturn_FSR)
@@ -267,6 +267,8 @@ if __name__ == "__main__":
     print("Coulomb: Overturning Moment FS: ", overturn_FSC)
     
     Bearing_Capacity()
+    
+    print()
     print("This program assumes that the soil is cohesionless. Using Terzaghi's method, the following bearing capacity information was calculated:")
     print("Value of Nq: ", Nq)
     print("Value of Nc: ", Nc)
@@ -276,11 +278,19 @@ if __name__ == "__main__":
     print("Bearing Capacity FS: ", bearing_capacity_FS)
     
     FS_Sliding()
+    
+    print()
     print("Rankine: Sliding FS: ", sliding_FSR)
-    print(" Coulomb: Sliding FS: ", sliding_FSC)
+    print("Coulomb: Sliding FS: ", sliding_FSC)
     qmin_qmax_qeq()
-
-    Schmertmann()
+    
+    Schmertmann_Method()
+    
+    print()
+    print("Schmertmann's Method: C1: ", c_1)
+    print("Schmertmann's Method: C2: ", c_2)
     print("Schmertmann's Method: Immediate Settlement in Feet ", S_i)
 
+    #End Program
+    print()
     input("Press Enter to close...")  
