@@ -190,12 +190,15 @@ def Bearing_Capacity():
     ##############################################################################
     # Bearing Capacity, values will be the same whether user prefered to use Rankine 
     # or Coulomb above
-
+    global Nq, Nc, Ngamma, q, Bprime
+    
     Nq = np.exp(np.pi * np.tan(Phi_rad)) * np.tan(np.radians(45) + Phi_rad / 2) ** 2
     Nc = (Nq - 1) * np.cot(Phi_rad)
     Ngamma = 2 * (Nq + 1) * np.tan(Phi_rad)
     
-    q = Depth * Gamma
+    q = Depth * Gamma #psf
+    
+    Bprime = SlabBottom - 2 * np.exp #ft
     
    
 
