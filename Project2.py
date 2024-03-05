@@ -13,6 +13,7 @@ stem_top = 1 # ft
 slab_depth = 2 # ft
 stem_slope = 1/0.02 # unitless
 
+
 def user_input():
  
     root = tk.Tk()
@@ -20,7 +21,7 @@ def user_input():
 
     # Prompt the user to input dimensions using a pop up window
     
-    global height, gamma, alpha, phi
+    global height, gamma, alpha, phi, alpha_rad
     height = simpledialog.askfloat("Input", "Enter the height of the stem (H) in feet.")
     gamma = simpledialog.askfloat("Input", "Enter the value of \u03B3 in lbs/cubic foot.")
     alpha = simpledialog.askfloat("Input", "Enter the value of \u03B1 in degrees.")
@@ -29,6 +30,8 @@ def user_input():
     # Calculating Dimensions of Rigid Retaining Wall Based on User Input of Height 
     
     global stem_height, slab_bottom, slab_thickness, heel, toe, soil_height
+ 
+    alpha_rad= np.radians(alpha)
     stem_height = 1 * height
     slab_bottom = 0.5 * height
     slab_thickness = 0.1 * height
@@ -67,7 +70,7 @@ def rankine_analysis(soil_height, gamma, alpha, phi):
     plt.gca().invert_yaxis()  # Invert y-axis to show depth increasing downwards
     plt.xlabel('Pressure (pcf)')
     plt.ylabel('Depth (ft)')
-    plt.title('Lateral Earth Pressure Distribution')
+    plt.title('Lateral Earth Pressure Distribution- Rankine')
     plt.legend()
     plt.grid(True)
     plt.show()
@@ -76,7 +79,7 @@ def rankine_analysis(soil_height, gamma, alpha, phi):
 # ADD AN OUTPUT TABLE AND MAYBE AN IMAGE OR SOMETHING TO WRAP UP RANKINE
 #####################################################################################################################################
 
-def coloumb_pressure():
+def coloumb_analysis():
     global CPv, CPh, CPa, CPa, CKp, CKa, CPp
 
  # Calculate the coefficient (Ka) of the active earth pressure using Coulomb
@@ -93,7 +96,7 @@ def coloumb_pressure():
 
     CPv = CPa * np.sin(alpha_rad)
     CPh = CPa * np.cos(alpha_rad)
-    
+
 #####################################################################################################################################
 # ADD AN OUTPUT TABLE AND MAYBE AN IMAGE OR SOMETHING TO WRAP UP COULOMB
 #####################################################################################################################################
@@ -108,14 +111,7 @@ def coloumb_pressure():
 def overturning_moment (height, gamma, gamma_concrete, heel, soil_height, slab_thickness, stem_top, alpha_rad):
 #####################################################################################################################################
 
-# # Overturning Calculations # #
-# # See diagram included in GitHub Repository for diagram with sections labeled that will be referenced here # #
-# # Calculating Moments Originating from Structure # #
-# Take moment about the center point at the base where the stem meets with the slab, assume CCW = +
-# Moment location (assuming the center of the bottom of the slab is (0,0)).
-# (x,y) = (0.15 * H, 0.1 * H)
-
-    global weight_total, overturn_FSR, overturn_FSC, vertical_force_sum
+    global weight_total, overturn_FSR, overturn_FSC, vertical_force_sum, moment_resist_R, moment_overturn_R, moment_resist_C, moment_overturn_C
     
     area_1 = ((heel) * (height - slab_thickness))
     area_2 = 0.5 * ((0.3 * height) ** 2) * (np.tan(alpha_rad))
@@ -190,8 +186,8 @@ def qmin_qmax_qeq():
     # Calculate qmin and qmax
     global q_max, q_min, q_eq
     
-    q_min = (vertical_force_sum / slab_bottom) * (1 - ((6 * np.exp)/slab_bottom)) #psf
-    q_max = (vertical_force_sum / slab_bottom) * (1 + ((6 * np.exp)/slab_bottom)) #psf
+    q_min = (vertical_force_sum / slab_bottom) * (1 - ((6 * math.e)/slab_bottom))  # psf
+    q_max = (vertical_force_sum / slab_bottom) * (1 + ((6 * math.e)/slab_bottom))  # psf
     q_eq =  (vertical_force_sum / B_prime) #psf
 
 def Bearing_Capacity():
@@ -202,63 +198,24 @@ def Bearing_Capacity():
     
     c_prime = 0 # we are assuming there is no cohesion
     Nq = np.exp(np.pi * np.tan(phi_rad)) * np.tan(np.radians(45) + phi_rad / 2) ** 2
-    Nc = (Nq - 1) * np.cot(phi_rad)
+    Nc = (Nq - 1) * (np.cos(phi_rad)/np.sin(phi_rad))
     N_gamma = 2 * (Nq + 1) * np.tan(phi_rad)
     
     q = slab_depth * gamma #psf
-    B_prime = slab_bottom - 2 * np.exp #ft
+    B_prime = slab_bottom - 2 * math.e #ft
     q_ult_terz = (c_prime * Nc) + (q * Nq) + (0.5 * gamma * B_prime * N_gamma) #psf
-    bearing_capacity_FS = (q_ult_terz / q_max) # elected to use the trapezoidal max stress (qult_terz / qmax)
+    bearing_capacity_FS = (q_ult_terz / (vertical_force_sum / slab_bottom) * (1 + ((6 * math.e)/slab_bottom)) ) # elected to use the trapezoidal max stress (qult_terz / qmax)
     
-def display_results(rankine_results, coulomb_results):
-    """
-    Displays results from Rankine and Coulomb analyses in a pop-up table.
-
-    Args:
-        rankine_results (dict): Dictionary containing Rankine analysis results.
-        coulomb_results (dict): Dictionary containing Coulomb analysis results.
-    """
-
-    root = tk.Tk()
-    root.withdraw()  # Hide the root window
-    
-    # Convert sets to dictionaries if necessary
-    if isinstance(rankine_results, set):
-        rankine_results = dict(rankine_results)
-    if isinstance(coulomb_results, set):
-        coulomb_results = dict(coulomb_results)
-
-    # Extract data from dictionaries
-    rankine_sliding_fs = rankine_results["sliding_fs"]
-    rankine_overturning_fs = rankine_results["overturning_fs"]
-    rankine_bearing_capacity_fs = rankine_results["bearing_capacity_fs"]
-
-    coulomb_sliding_fs = coulomb_results["sliding_fs"]
-    coulomb_overturning_fs = coulomb_results["overturning_fs"]
-    coulomb_bearing_capacity_fs = coulomb_results["bearing_capacity_fs"]
-
-    # Create table content
-    table_data = [
-        ["Analysis", "Sliding FS", "Overturning FS", "Bearing Capacity FS"],
-        ["Rankine", rankine_sliding_fs, rankine_overturning_fs, rankine_bearing_capacity_fs],
-        ["Coulomb", coulomb_sliding_fs, coulomb_overturning_fs, coulomb_bearing_capacity_fs],
-    ]
-
-    # Create messagebox with table
-    messagebox.showinfo(
-        "Results Summary",
-        message="\n".join([str(row) for row in table_data]),
-    )
-
     
 def Schmertmann():
     
-    global Es_1, Es_2, Es_3, Es_4, Hc_1, Hc_2, Hc_3, Hc_4, Iz, t, c_1, c_2, delta_Hi_1, delta_Hi_2, delta_Hi_3, delta_Hi_4, delta_Hi_sum
+    global Es_1, Es_2, Es_3, Es_4, Hc_1, Hc_2, Hc_3, Hc_4, Iz, t, c_1, c_2, delta_Hi_1, delta_Hi_2, delta_Hi_3, delta_Hi_4, delta_Hi_sum,S_i
     
+    B_e = B_prime #ft
     p = q_eq #psf
     p_o = slab_depth * gamma #psf
     p_op = (slab_depth + B_e) * gamma #psf
-    B_e = B_prime #ft
+
     delta_p = p - p_o #psf
     
     ##################### MESSAGE ABOUT SECTION AND WHAT WILL BE DONE, HERE ##########
@@ -293,8 +250,35 @@ if __name__ == "__main__":
     # root.withdraw()  
 
     rankine_analysis(soil_height, gamma, alpha, phi)
-    input("Press Enter to close...")  # Pause execution to see the plot
+    coloumb_analysis()  # This needs to be called before accessing CPv or CPh
+
+ 
+    print("Rankine: Vertical Component of Active Earth Pressure: ", RPv)
+    print("Rankine: Horizontal Component of Active Earth Pressure: ", RPh)
+    print("Coulomb: Vertical Component of Active Earth Pressure:", CPv)
+    print("Coulomb: Horizontal Component of Active Earth Pressure:", CPh)
     
-    rankine_results = {...}  # populate with Rankine results
-    coulomb_results = {...}  # populate with Coulomb results
-    display_results(rankine_results, coulomb_results)
+    overturning_moment (height, gamma, gamma_concrete, heel, soil_height, slab_thickness, stem_top, alpha_rad)
+    print("Rankine: Total Resisting Moment: ", moment_resist_R)
+    print("Rankine: Total Overturning Moment: ", moment_overturn_R)
+    print("Rankine: Overturning Moment FS: ", overturn_FSR)
+    print("Coulomb: Total Resisting Moment: ", moment_resist_C)
+    print("Coulomb: Total Overturning Moment: ", moment_overturn_C)
+    print("Coulomb: Overturning Moment FS: ", overturn_FSC)
+    
+    Bearing_Capacity()
+    print("This program assumes that the soil is cohesionless. Using Terzaghi's method, the following bearing capacity information was calculated:")
+    print("Value of Nq: ", Nq)
+    print("Value of Nc: ", Nc)
+    print("Value of q: ", q)
+    print("Value of B': ", B_prime)
+    print("Value of q_ultimate: ", q_ult_terz)
+    print("Bearing Capacity FS: ", bearing_capacity_FS)
+    
+    FS_Sliding()
+    qmin_qmax_qeq()
+
+    Schmertmann()
+    print("Schmertmann's Method: Immediate Settlement in Feet ", S_i)
+
+    input("Press Enter to close...")  
