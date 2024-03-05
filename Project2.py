@@ -179,7 +179,7 @@ def FS_Sliding():
 def qmin_qmax_qeq():
     ##############################################################################
     # Calculate qmin and qmax
-    global qmax, qmin
+    global qmax, qmin, qeq
     
     qmin = (VerticalForceSum / SlabBottom) * (1 - ((6 * np.exp)/SlabBottom)) #psf
     qmax = (VerticalForceSum / SlabBottom) * (1 + ((6 * np.exp)/SlabBottom)) #psf
@@ -201,6 +201,30 @@ def Bearing_Capacity():
     qult_terz = (cprime * Nc) + (q * Nq) + (0.5 * Gamma * Bprime * Ngamma) #psf
     Bearing_Capacity_FS = (qult_terz / qmax) # elected to use the trapezoidal max stress (qult_terz / qmax)
     
+def Schmertmann():
+    
+    global Es1, Es2, Es3, Es4, Hc1, Hc2, Hc3, Hc4
+    
+    p = qeq #psf
+    Po = Depth * Gamma #psf
+    Pop = (Depth + Be) * Gamma #psf
+    Be = Bprime #ft
+    DeltaP = p - Po #psf
+    
+    ##################### MESSAGE ABOUT SECTION AND WHAT WILL BE DONE, HERE ##########
+    Es1 = simpledialog.askfloat("Input", "Enter the modulus of elasticity for soil layer 1 in tsf.") #tsf
+    Es2 = simpledialog.askfloat("Input", "Enter the modulus of elasticity for soil layer 2 in tsf.") #tsf
+    Es3 = simpledialog.askfloat("Input", "Enter the modulus of elasticity for soil layer 3 in tsf.") #tsf
+    Es4 = simpledialog.askfloat("Input", "Enter the modulus of elasticity for soil layer 4 in tsf.") #tsf
+
+    Hc1 = simpledialog.askfloat("Input", "Enter the thickness of soil layer 1 in feet.") #ft
+    Hc2 = simpledialog.askfloat("Input", "Enter the thickness of soil layer 2 in feet.") #ft
+    Hc3 = simpledialog.askfloat("Input", "Enter the thickness of soil layer 3 in feet.") #ft
+    Hc4 = simpledialog.askfloat("Input", "Enter the thickness of soil layer 4 in feet.") #ft
+    
+    Iz1 = 0.5 + 0.1 * (DeltaP / Pop) ** 0.5
+    
+
 
 if __name__ == "__main__":
     main()
