@@ -203,7 +203,7 @@ def Bearing_Capacity():
     
 def Schmertmann():
     
-    global Es1, Es2, Es3, Es4, Hc1, Hc2, Hc3, Hc4, Iz, t
+    global Es1, Es2, Es3, Es4, Hc1, Hc2, Hc3, Hc4, Iz, t, c1, c2, DeltaHi1, DeltaHi2, DeltaHi3, DeltaHi4
     
     p = qeq #psf
     Po = Depth * Gamma #psf
@@ -226,7 +226,16 @@ def Schmertmann():
     
     t = simpledialog.askfloat("Input", "Enter the number of years you want the settlement to be evaluated for.")
     
-
-
+    DeltaHi1 = Hc1 * (Iz / 1 * Es1)
+    DeltaHi2 = Hc2 * (Iz / 1 * Es2)
+    DeltaHi3 = Hc3 * (Iz / 1 * Es3)
+    DeltaHi4 = Hc4 * (Iz / 1 * Es4)
+    DeltaHiSum = DeltaHi1 + DeltaHi2 + DeltaHi3 + DeltaHi4
+    
+    c1 = 1 - 0.5 * (Po / DeltaP) # >=0.5
+    c2 = 1 + 0.2 * np.log10(t/0.1)
+    
+    Si = c1 * c2 * DeltaP * DeltaHiSum
+    
 if __name__ == "__main__":
     main()
