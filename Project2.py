@@ -159,7 +159,8 @@ def FS_Sliding():
     SlidingFSC = (WeightTotal * np.tan(SigmaC)) / (CPh)
 
     ##############################################################################
-    # Bearing Capacity
+    # Bearing Capacity, values will be the same whether user prefered to use Rankine 
+    # or Coulomb above
 
     import math
 
@@ -167,8 +168,10 @@ def FS_Sliding():
     euler_number = math.e
     pi_value = math.pi
 
-    NqR = (math.e ** (2 * (((3 * math.pi)/4) - (0.5 * Phi))* np.tan(Phi))) / (2 * (np.cos (45 + (Phi/2))) ** 2)
-
+    Nq = np.exp(np.pi * np.tan(Phi_rad)) * np.tan(np.radians(45) + Phi_rad / 2) ** 2
+    Nc = (Nq - 1) * np.cot(Phi_rad)
+    Ngamma = 2 * (Nq + 1) * np.tan(Phi_rad)
+   
 
 if __name__ == "__main__":
     main()
