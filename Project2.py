@@ -142,7 +142,7 @@ def overturning_moment (Height, Gamma, GammaConcrete, Heel, SoilHeight, SlabThic
     # Rankine: Overturning FS
     OverturnFSR = MomentResistR / MomentOverturnR
 
-    # Coulomb: Overtruning FD
+    # Coulomb: Overtruning FS
     OverturnFSC = MomentResistC / MomentOverturnC
     
 
