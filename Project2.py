@@ -38,11 +38,7 @@ def user_input():
 
 
 def rankine_analysis(soil_height, gamma, alpha, phi):
-    global RPv, RPh, RPa, RPa, RKp, RKa, RPp
-    
-    # Convert angles from degrees to radians
-    
-    global phi_rad, alpha_rad
+    global RPv, RPh, RPa, RPa, RKp, RKa, RPp, phi_rad, alpha_rad
     
     phi_rad= np.radians(phi)
     alpha_rad= np.radians(alpha)
@@ -252,3 +248,8 @@ def Schmertmann():
     
 if __name__ == "__main__":
     user_input()
+    # Temporarily remove to see the plot window
+    # root.withdraw()  
+
+    rankine_analysis(soil_height, gamma, alpha, phi)
+    input("Press Enter to close...")  # Pause execution to see the plot
