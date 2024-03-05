@@ -176,20 +176,20 @@ def FS_Sliding():
     
     
     
-def qmin_qmax():
+def qmin_qmax_qeq():
     ##############################################################################
     # Calculate qmin and qmax
     global qmax, qmin
     
     qmin = (VerticalForceSum / SlabBottom) * (1 - ((6 * np.exp)/SlabBottom)) #psf
     qmax = (VerticalForceSum / SlabBottom) * (1 + ((6 * np.exp)/SlabBottom)) #psf
-        
+    qeq =  (VerticalForceSum / Bprime) #psf
 
 def Bearing_Capacity():
     ##############################################################################
     # Bearing Capacity, values will be the same whether user prefered to use Rankine 
     # or Coulomb above
-    global Nq, Nc, Ngamma, q, Bprime, qult_terz
+    global Nq, Nc, Ngamma, q, Bprime, qult_terz, Bearing_Capacity_FS
     
     cprime = 0 # we are assuming there is no cohesion
     Nq = np.exp(np.pi * np.tan(Phi_rad)) * np.tan(np.radians(45) + Phi_rad / 2) ** 2
@@ -199,9 +199,8 @@ def Bearing_Capacity():
     q = Depth * Gamma #psf
     Bprime = SlabBottom - 2 * np.exp #ft
     qult_terz = (cprime * Nc) + (q * Nq) + (0.5 * Gamma * Bprime * Ngamma) #psf
+    Bearing_Capacity_FS = (qult_terz / qmax) # elected to use the trapezoidal max stress (qult_terz / qmax)
     
-    
-   
 
 if __name__ == "__main__":
     main()
