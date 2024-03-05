@@ -276,6 +276,8 @@ if __name__ == "__main__":
     print("Bearing Capacity FS: ", bearing_capacity_FS)
     
     FS_Sliding()
+    print("Rankine: Sliding FS: ", sliding_FSR)
+    print(" Coulomb: Sliding FS: ", sliding_FSC)
     qmin_qmax_qeq()
 
     Schmertmann()
