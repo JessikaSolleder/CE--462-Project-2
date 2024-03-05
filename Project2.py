@@ -235,7 +235,7 @@ def Schmertmann():
     c1 = 1 - 0.5 * (Po / DeltaP) # >=0.5
     c2 = 1 + 0.2 * np.log10(t/0.1)
     
-    Si = c1 * c2 * DeltaP * DeltaHiSum
+    Si = c1 * c2 * DeltaP * DeltaHiSum #feet
     
 if __name__ == "__main__":
     main()
