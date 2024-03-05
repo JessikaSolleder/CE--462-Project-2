@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import simpledialog
 import numpy as np
+import math
+import matplotlib.pyplot as plt
 
 def main():
 
@@ -157,12 +159,21 @@ def FS_Sliding():
     # Coulomb: Sliding FS Check
     SigmaC = (3/4) * (Phi) # Interface friction between the concrete and the base soil
     SlidingFSC = (WeightTotal * np.tan(SigmaC)) / (CPh)
+    
+    
+    
+    
+    ##############################################################################
+    # Calculate qmin and qmax
+    
+    
+        
 
+
+def Bearing_Capacity():
     ##############################################################################
     # Bearing Capacity, values will be the same whether user prefered to use Rankine 
     # or Coulomb above
-
-    import math
 
     # Access Euler's number
     euler_number = math.e
@@ -171,6 +182,9 @@ def FS_Sliding():
     Nq = np.exp(np.pi * np.tan(Phi_rad)) * np.tan(np.radians(45) + Phi_rad / 2) ** 2
     Nc = (Nq - 1) * np.cot(Phi_rad)
     Ngamma = 2 * (Nq + 1) * np.tan(Phi_rad)
+    
+    q = Depth * Gamma
+    
    
 
 if __name__ == "__main__":
