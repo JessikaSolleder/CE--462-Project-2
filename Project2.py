@@ -5,68 +5,65 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 
-# Access Euler's number & Pi  
+# Constants / numbers
 euler_number = math.e
 pi_value = math.pi
+gamma_concrete = 150 # pcf
+stem_top = 1 # ft
+slab_depth = 2 # ft
+stem_slope = 1/0.02 # unitless
 
-def main():
-
-# # WALL GEOMETRY # #
-    # Constants
-    global GammaConcrete, StemTop, Depth, StemSlope
-    GammaConcrete = 150 # pcf
-    StemTop = 1 # ft
-    Depth = 2 # ft
-    StemSlope = 1/0.02 # unitless
-
+def user_input():
+ 
     root = tk.Tk()
     root.withdraw()  # Hide the root window
 
     # Prompt the user to input dimensions using a pop up window
-    global Height, Gamma, Alpha, Phi
-    Height = simpledialog.askfloat("Input", "Enter the height of the stem (H) in feet.")
-    Gamma = simpledialog.askfloat("Input", "Enter the value of \u03B3 in lbs/cubic foot.")
-    Alpha = simpledialog.askfloat("Input", "Enter the value of \u03B1 in degrees.")
-    Phi = simpledialog.askfloat("Input", "Enter the value of \u03c6 ' in degrees.")
+    
+    global height, gamma, alpha, phi
+    height = simpledialog.askfloat("Input", "Enter the height of the stem (H) in feet.")
+    gamma = simpledialog.askfloat("Input", "Enter the value of \u03B3 in lbs/cubic foot.")
+    alpha = simpledialog.askfloat("Input", "Enter the value of \u03B1 in degrees.")
+    phi = simpledialog.askfloat("Input", "Enter the value of \u03c6 ' in degrees.")
 
-# # Calculating Dimensions of Rigid Retaining Wall Based on User Input of Height # #
+    # Calculating Dimensions of Rigid Retaining Wall Based on User Input of Height 
+    
+    global stem_height, slab_bottom, slab_thickness, heel, toe, soil_height
+    stem_height = 1 * height
+    slab_bottom = 0.5 * height
+    slab_thickness = 0.1 * height
+    heel = 0.3 * height
+    toe = 0.1 * height
+    soil_height = slab_thickness + stem_height + heel + np.tan(alpha)
 
-    global StemHeight, SlabBottom, SlabThickness, Heel, Toe, SoilHeight
-    StemHeight = 1 * Height
-    SlabBottom = 0.5 * Height
-    SlabThickness = 0.1 * Height
-    Heel = 0.3 * Height
-    Toe = 0.1 * Height
-    SoilHeight = SlabThickness + StemHeight + Heel + np.tan(Alpha)
 
-
-def rankine_analysis(SoilHeight, Gamma, Alpha, Phi):
+def rankine_analysis(soil_height, gamma, alpha, phi):
     global RPv, RPh, RPa, RPa, RKp, RKa, RPp
     
     # Convert angles from degrees to radians
     
-    global Phi_rad, Alpha_rad
+    global phi_rad, alpha_rad
     
-    Phi_rad= np.radians(Phi)
-    Alpha_rad= np.radians(Alpha)
+    phi_rad= np.radians(phi)
+    alpha_rad= np.radians(alpha)
 
     # Calculate the coefficient (Ka) of the active earth pressure using Rakine
-    RKa = (1 - np.sin(Phi_rad)) / (1 + np.sin(Phi_rad))
+    RKa = (1 - np.sin(phi_rad)) / (1 + np.sin(phi_rad))
 
     # Calculate the coefficient (Kp) of the passive earth pressure using Rakine
-    RKp = (1 + np.sin(Phi_rad)) / (1 - np.sin(Phi_rad))
+    RKp = (1 + np.sin(phi_rad)) / (1 - np.sin(phi_rad))
 
     # Calculate Rankine Lateral Earth Pressures for the active and passive conditions
-    RPa = 0.5 * RKa * (Gamma * (SoilHeight ** 2))
-    RPp = 0.5 * RKp * (Gamma * (SoilHeight ** 2))
+    RPa = 0.5 * RKa * (gamma * (soil_height ** 2))
+    RPp = 0.5 * RKp * (gamma * (soil_height ** 2))
 
     # Calculate Rankine horizontal & vertical components of the active earth pressure from above
-    RPv = RPa * np.sin(Alpha_rad)
-    RPh = RPa * np.cos(Alpha_rad)
+    RPv = RPa * np.sin(alpha_rad)
+    RPh = RPa * np.cos(alpha_rad)
     
-    depth = np.linspace(0, SoilHeight, 100)  # Generate 100 points from top to bottom of the wall
-    pressure_active = RKa * Gamma * depth  # Active earth pressure distribution
-    pressure_passive = RKp * Gamma * depth  # Passive earth pressure distribution
+    depth = np.linspace(0, soil_height, 100)  # Generate 100 points from top to bottom of the wall
+    pressure_active = RKa * gamma * depth  # Active earth pressure distribution
+    pressure_passive = RKp * gamma * depth  # Passive earth pressure distribution
 
     plt.figure(figsize=(10, 6))
     plt.plot(pressure_active, depth, label='Active Earth Pressure', color='blue')
@@ -87,19 +84,19 @@ def coloumb_pressure():
     global CPv, CPh, CPa, CPa, CKp, CKa, CPp
 
  # Calculate the coefficient (Ka) of the active earth pressure using Coulomb
-    CKa = ((np.cos(Phi_rad)) ** 2) / (np.cos(Alpha_rad)*(1+((np.sin(Phi_rad + Alpha_rad) * (np.sin(Phi_rad - Alpha_rad)))/(np.cos(Alpha_rad)*(np.cos(-Alpha_rad))) ** 0.5) ** 2))
+    CKa = ((np.cos(phi_rad)) ** 2) / (np.cos(alpha_rad)*(1+((np.sin(phi_rad + alpha_rad) * (np.sin(phi_rad - alpha_rad)))/(np.cos(alpha_rad)*(np.cos( - alpha_rad))) ** 0.5) ** 2))
 
  # Calculate the coefficient (Kp) of the passive earth pressure using Coulomb
-    CKp = (1 + np.sin(Phi_rad)) / (1 - np.sin(Phi_rad))
+    CKp = (1 + np.sin(phi_rad)) / (1 - np.sin(phi_rad))
     
 # Calculate Coulomb Lateral Earth Pressures for the active and passive conditions
-    CPp = 0.5 * RKp * (Gamma * (SoilHeight ** 2))
-    CPa = 0.5 * (CKa*Gamma*(SoilHeight ** 2))
+    CPp = 0.5 * RKp * (gamma * (soil_height ** 2))
+    CPa = 0.5 * (CKa * gamma * (soil_height ** 2))
     
 # Calculate Coulomb horizontal & vertical components of the active earth pressure from above 
 
-    CPv = CPa * np.sin(Alpha_rad)
-    CPh = CPa * np.cos(Alpha_rad)
+    CPv = CPa * np.sin(alpha_rad)
+    CPh = CPa * np.cos(alpha_rad)
     
 #####################################################################################################################################
 # ADD AN OUTPUT TABLE AND MAYBE AN IMAGE OR SOMETHING TO WRAP UP COULOMB
@@ -112,7 +109,7 @@ def coloumb_pressure():
 # Moment location (assuming the center of the bottom of the slab is (0,0)).
 # (x,y) = (0.15 * H, 0.1 * H)
 
-def overturning_moment (Height, Gamma, GammaConcrete, Heel, SoilHeight, SlabThickness, StemTop, Alpha_rad):
+def overturning_moment (height, gamma, gamma_concrete, heel, soil_height, slab_thickness, stem_top, alpha_rad):
 #####################################################################################################################################
 
 # # Overturning Calculations # #
@@ -122,135 +119,136 @@ def overturning_moment (Height, Gamma, GammaConcrete, Heel, SoilHeight, SlabThic
 # Moment location (assuming the center of the bottom of the slab is (0,0)).
 # (x,y) = (0.15 * H, 0.1 * H)
 
-    global WeightTotal, OverturnFSR, OverturnFSC, VerticalForceSum
+    global weight_total, overturn_FSR, overturn_FSC, vertical_force_sum
     
-    Area1 = ((Heel) * (Height - SlabThickness))
-    Area2 = 0.5 * ((0.3 * Height) ** 2) * (np.tan(Alpha_rad))
-    Area3 = StemTop * (Height - SlabThickness)
-    Area4 = 0.5 * (Height * (0.02 * Height))
-    Area5 = (0.1 * Height) * (0.5 * Height)
+    area_1 = ((heel) * (height - slab_thickness))
+    area_2 = 0.5 * ((0.3 * height) ** 2) * (np.tan(alpha_rad))
+    area_3 = stem_top * (height - slab_thickness)
+    area_4 = 0.5 * (height * (0.02 * height))
+    area_5 = (0.1 * height) * (0.5 * height)
 
-    Weight1 = Gamma * Area1
-    Weight2 = Gamma * Area2
-    Weight3 = GammaConcrete * Area3
-    Weight4 = GammaConcrete * Area4 
-    Weight5 = GammaConcrete * Area5
-    WeightTotal = Weight1 + Weight2 + Weight3 + Weight4 + Weight5
+    weight_1 = gamma * area_1
+    weight_2 = gamma * area_2
+    weight_3 = gamma_concrete * area_3
+    weight_4 = gamma_concrete * area_4 
+    weight_5 = gamma_concrete * area_5
+    weight_total = weight_1 + weight_2 + weight_3 + weight_4 + weight_5
 
-    VerticalForce1 = Weight1
-    VerticalForce2 = Weight2
-    VerticalForce3 = Weight3
-    VerticalForce4 = Weight4
-    VerticalForce5 = Weight5
-    VerticalForceSum = VerticalForce1 + VerticalForce2 + VerticalForce3 + VerticalForce4 + VerticalForce5
+    vertical_force_1 = weight_1
+    vertical_force_2 = weight_2
+    vertical_force_3 = weight_3
+    vertical_force_4 = weight_4
+    vertical_force_5 = weight_5
+    vertical_force_sum = vertical_force_1 + vertical_force_2 + vertical_force_3 + vertical_force_4 + vertical_force_5
 
 
-    MomentArm1 = (0.15 * Height)
-    MomentArm2 = (2/3) * (0.3 * Height)
-    MomentArm3 = ((0.1 * Height) - (0.02 * Height)) / 2
-    MomentArm4 = 0.5 * ((0.1 * Height) - StemTop) ###### DOUBLE CHECK THIS ONE! #####
-    MomentArm5 = (SlabBottom / 2) - (Toe + (0.05 * Height))
+    moment_arm_1 = (0.15 * height)
+    moment_arm_2 = (2/3) * (0.3 * height)
+    moment_arm_3 = ((0.1 * height) - (0.02 * height)) / 2
+    moment_arm_4 = 0.5 * ((0.1 * height) - stem_top) ###### DOUBLE CHECK THIS ONE! #####
+    moment_arm_5 = (slab_bottom / 2) - (toe + (0.05 * height))
 
-    Moment1 = VerticalForce1 * MomentArm1
-    Moment2 = VerticalForce2 * MomentArm2
-    Moment3 = VerticalForce3 * MomentArm3
-    Moment4 = VerticalForce4 * MomentArm4
-    Moment5 = VerticalForce5 * MomentArm5
-    MomentSum =  - Moment1 - Moment2 - Moment3 + Moment4 - Moment5
+    moment_1 = vertical_force_1 * moment_arm_1
+    moment_2 = vertical_force_2 * moment_arm_2
+    moment_3 = vertical_force_3 * moment_arm_3
+    moment_4 = vertical_force_4 * moment_arm_4
+    moment_5 = vertical_force_5 * moment_arm_5
+    moment_sum =  - moment_1 - moment_2 - moment_3 + moment_4 - moment_5
 
     # Rankine: Resisting Moment
-    MomentResistR = MomentSum + SlabBottom * RPv
+    moment_resist_R = moment_sum + slab_bottom * RPv
 
     # Rankine: Overturning Moment
-    MomentOverturnR = (SoilHeight / 3) * RPh
+    moment_overturn_R = (soil_height / 3) * RPh
 
     # Coulomb: Resisting Moment
-    MomentResistC = MomentSum + SlabBottom * CPv
+    moment_resist_C = moment_sum + slab_bottom * CPv
 
     # Coulomb: Overturning Moment
-    MomentOverturnC = (SoilHeight / 3) * CPh
+    moment_overturn_C = (soil_height / 3) * CPh
 
     # Rankine: Overturning FS
-    OverturnFSR = MomentResistR / MomentOverturnR
+    overturn_FSR = moment_resist_R / moment_overturn_R
 
     # Coulomb: Overtruning FS
-    OverturnFSC = MomentResistC / MomentOverturnC
+    overturn_FSC = moment_resist_C / moment_overturn_C
     
 
 def FS_Sliding():
 #######################################################################
 # FS Sliding
-    global SlidingFSC, SlidingFSR
+    global sliding_FSC, sliding_FSR
+    
 # Rankine: Sliding FS Check
-    SigmaR = (3/4) * (Phi) # Interface friction between the concrete and the base soil
-    SlidingFSR = (WeightTotal * np.tan(SigmaR)) / (RPh)
+    sigma_R = (3/4) * (phi) # Interface friction between the concrete and the base soil
+    sliding_FSR = (weight_total * np.tan(sigma_R)) / (RPh)
 
     # Coulomb: Sliding FS Check
-    SigmaC = (3/4) * (Phi) # Interface friction between the concrete and the base soil
-    SlidingFSC = (WeightTotal * np.tan(SigmaC)) / (CPh)
+    sigma_C = (3/4) * (phi) # Interface friction between the concrete and the base soil
+    sliding_FSC = (weight_total * np.tan(sigma_C)) / (CPh)
     
     
     
 def qmin_qmax_qeq():
     ##############################################################################
     # Calculate qmin and qmax
-    global qmax, qmin, qeq
+    global q_max, q_min, q_eq
     
-    qmin = (VerticalForceSum / SlabBottom) * (1 - ((6 * np.exp)/SlabBottom)) #psf
-    qmax = (VerticalForceSum / SlabBottom) * (1 + ((6 * np.exp)/SlabBottom)) #psf
-    qeq =  (VerticalForceSum / Bprime) #psf
+    q_min = (vertical_force_sum / slab_bottom) * (1 - ((6 * np.exp)/slab_bottom)) #psf
+    q_max = (vertical_force_sum / slab_bottom) * (1 + ((6 * np.exp)/slab_bottom)) #psf
+    q_eq =  (vertical_force_sum / B_prime) #psf
 
 def Bearing_Capacity():
     ##############################################################################
     # Bearing Capacity, values will be the same whether user prefered to use Rankine 
     # or Coulomb above
-    global Nq, Nc, Ngamma, q, Bprime, qult_terz, Bearing_Capacity_FS
+    global Nq, Nc, N_gamma, q, B_prime, q_ult_terz, bearing_capacity_FS, c_prime
     
-    cprime = 0 # we are assuming there is no cohesion
-    Nq = np.exp(np.pi * np.tan(Phi_rad)) * np.tan(np.radians(45) + Phi_rad / 2) ** 2
-    Nc = (Nq - 1) * np.cot(Phi_rad)
-    Ngamma = 2 * (Nq + 1) * np.tan(Phi_rad)
+    c_prime = 0 # we are assuming there is no cohesion
+    Nq = np.exp(np.pi * np.tan(phi_rad)) * np.tan(np.radians(45) + phi_rad / 2) ** 2
+    Nc = (Nq - 1) * np.cot(phi_rad)
+    N_gamma = 2 * (Nq + 1) * np.tan(phi_rad)
     
-    q = Depth * Gamma #psf
-    Bprime = SlabBottom - 2 * np.exp #ft
-    qult_terz = (cprime * Nc) + (q * Nq) + (0.5 * Gamma * Bprime * Ngamma) #psf
-    Bearing_Capacity_FS = (qult_terz / qmax) # elected to use the trapezoidal max stress (qult_terz / qmax)
+    q = slab_depth * gamma #psf
+    B_prime = slab_bottom - 2 * np.exp #ft
+    qult_terz = (c_prime * Nc) + (q * Nq) + (0.5 * gamma * B_prime * N_gamma) #psf
+    bearing_capacity_FS = (q_ult_terz / q_max) # elected to use the trapezoidal max stress (qult_terz / qmax)
     
 def Schmertmann():
     
-    global Es1, Es2, Es3, Es4, Hc1, Hc2, Hc3, Hc4, Iz, t, c1, c2, DeltaHi1, DeltaHi2, DeltaHi3, DeltaHi4
+    global Es_1, Es_2, Es_3, Es_4, Hc_1, Hc_2, Hc_3, Hc_4, Iz, t, c1, c2, delta_Hi_1, delta_Hi_2, delta_Hi_3, delta_Hi_4, delta_Hi_sum
     
-    p = qeq #psf
-    Po = Depth * Gamma #psf
-    Pop = (Depth + Be) * Gamma #psf
-    Be = Bprime #ft
-    DeltaP = p - Po #psf
+    p = q_eq #psf
+    p_o = slab_depth * gamma #psf
+    p_op = (slab_depth + B_e) * gamma #psf
+    B_e = B_prime #ft
+    delta_p = p - p_o #psf
     
     ##################### MESSAGE ABOUT SECTION AND WHAT WILL BE DONE, HERE ##########
-    Es1 = simpledialog.askfloat("Input", "Enter the modulus of elasticity for soil layer 1 in tsf.") #tsf
-    Es2 = simpledialog.askfloat("Input", "Enter the modulus of elasticity for soil layer 2 in tsf.") #tsf
-    Es3 = simpledialog.askfloat("Input", "Enter the modulus of elasticity for soil layer 3 in tsf.") #tsf
-    Es4 = simpledialog.askfloat("Input", "Enter the modulus of elasticity for soil layer 4 in tsf.") #tsf
+    Es_1 = simpledialog.askfloat("Input", "Enter the modulus of elasticity for soil layer 1 in tsf.") #tsf
+    Es_2 = simpledialog.askfloat("Input", "Enter the modulus of elasticity for soil layer 2 in tsf.") #tsf
+    Es_3 = simpledialog.askfloat("Input", "Enter the modulus of elasticity for soil layer 3 in tsf.") #tsf
+    Es_4 = simpledialog.askfloat("Input", "Enter the modulus of elasticity for soil layer 4 in tsf.") #tsf
 
-    Hc1 = simpledialog.askfloat("Input", "Enter the thickness of soil layer 1 in feet.") #ft
-    Hc2 = simpledialog.askfloat("Input", "Enter the thickness of soil layer 2 in feet.") #ft
-    Hc3 = simpledialog.askfloat("Input", "Enter the thickness of soil layer 3 in feet.") #ft
-    Hc4 = simpledialog.askfloat("Input", "Enter the thickness of soil layer 4 in feet.") #ft
+    Hc_1 = simpledialog.askfloat("Input", "Enter the thickness of soil layer 1 in feet.") #ft
+    Hc_2 = simpledialog.askfloat("Input", "Enter the thickness of soil layer 2 in feet.") #ft
+    Hc_3 = simpledialog.askfloat("Input", "Enter the thickness of soil layer 3 in feet.") #ft
+    Hc_4 = simpledialog.askfloat("Input", "Enter the thickness of soil layer 4 in feet.") #ft
     
-    Iz = 0.5 + 0.1 * (DeltaP / Pop) ** 0.5
+    Iz = 0.5 + 0.1 * (delta_p / p_op) ** 0.5
     
     t = simpledialog.askfloat("Input", "Enter the number of years you want the settlement to be evaluated for.")
     
-    DeltaHi1 = Hc1 * (Iz / 1 * Es1)
-    DeltaHi2 = Hc2 * (Iz / 1 * Es2)
-    DeltaHi3 = Hc3 * (Iz / 1 * Es3)
-    DeltaHi4 = Hc4 * (Iz / 1 * Es4)
-    DeltaHiSum = DeltaHi1 + DeltaHi2 + DeltaHi3 + DeltaHi4
+    delta_Hi_1 = Hc_1 * (Iz / 1 * Es_1)
+    delta_Hi_2 = Hc_2 * (Iz / 1 * Es_2)
+    delta_Hi_3 = Hc_3 * (Iz / 1 * Es_3)
+    delta_Hi_4 = Hc_4 * (Iz / 1 * Es_4)
+    delta_Hi_sum = delta_Hi_1 + delta_Hi_2 + delta_Hi_3 + delta_Hi_4
     
-    c1 = 1 - 0.5 * (Po / DeltaP) # >=0.5
-    c2 = 1 + 0.2 * np.log10(t/0.1)
+    c_1 = 1 - 0.5 * (p_o / delta_p) # >=0.5
+    c_2 = 1 + 0.2 * np.log10(t/0.1)
     
-    Si = c1 * c2 * DeltaP * DeltaHiSum #feet
+    S_i = c_1 * c_2 * delta_p * delta_Hi_sum #feet
     
 if __name__ == "__main__":
-    main()
+    user_input()
