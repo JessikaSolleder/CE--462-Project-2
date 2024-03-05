@@ -64,6 +64,21 @@ def rankine_analysis(SoilHeight, Gamma, Alpha, Phi):
     RPv = RPa * np.sin(Alpha_rad)
     RPh = RPa * np.cos(Alpha_rad)
     
+    depth = np.linspace(0, SoilHeight, 100)  # Generate 100 points from top to bottom of the wall
+    pressure_active = RKa * Gamma * depth  # Active earth pressure distribution
+    pressure_passive = RKp * Gamma * depth  # Passive earth pressure distribution
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(pressure_active, depth, label='Active Earth Pressure', color='blue')
+    plt.plot(pressure_passive, depth, label='Passive Earth Pressure', color='red')
+    plt.gca().invert_yaxis()  # Invert y-axis to show depth increasing downwards
+    plt.xlabel('Pressure (pcf)')
+    plt.ylabel('Depth (ft)')
+    plt.title('Lateral Earth Pressure Distribution')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+    
 #####################################################################################################################################
 # ADD AN OUTPUT TABLE AND MAYBE AN IMAGE OR SOMETHING TO WRAP UP RANKINE
 #####################################################################################################################################
