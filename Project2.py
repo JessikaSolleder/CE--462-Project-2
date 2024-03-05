@@ -5,6 +5,10 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 
+# Access Euler's number & Pi  
+euler_number = math.e
+pi_value = math.pi
+
 def main():
 
 # # WALL GEOMETRY # #
@@ -94,7 +98,16 @@ def coloumb_pressure():
 # (x,y) = (0.15 * H, 0.1 * H)
 
 def overturning_moment (Height, Gamma, GammaConcrete, Heel, SoilHeight, SlabThickness, StemTop, Alpha_rad):
-    global WeightTotal, OverturnFSR, OverturnFSC
+#####################################################################################################################################
+
+# # Overturning Calculations # #
+# # See diagram included in GitHub Repository for diagram with sections labeled that will be referenced here # #
+# # Calculating Moments Originating from Structure # #
+# Take moment about the center point at the base where the stem meets with the slab, assume CCW = +
+# Moment location (assuming the center of the bottom of the slab is (0,0)).
+# (x,y) = (0.15 * H, 0.1 * H)
+
+    global WeightTotal, OverturnFSR, OverturnFSC, VerticalForceSum
     
     Area1 = ((Heel) * (Height - SlabThickness))
     Area2 = 0.5 * ((0.3 * Height) ** 2) * (np.tan(Alpha_rad))
@@ -114,6 +127,7 @@ def overturning_moment (Height, Gamma, GammaConcrete, Heel, SoilHeight, SlabThic
     VerticalForce3 = Weight3
     VerticalForce4 = Weight4
     VerticalForce5 = Weight5
+    VerticalForceSum = VerticalForce1 + VerticalForce2 + VerticalForce3 + VerticalForce4 + VerticalForce5
 
 
     MomentArm1 = (0.15 * Height)
@@ -151,7 +165,7 @@ def overturning_moment (Height, Gamma, GammaConcrete, Heel, SoilHeight, SlabThic
 def FS_Sliding():
 #######################################################################
 # FS Sliding
-
+    global SlidingFSC, SlidingFSR
 # Rankine: Sliding FS Check
     SigmaR = (3/4) * (Phi) # Interface friction between the concrete and the base soil
     SlidingFSR = (WeightTotal * np.tan(SigmaR)) / (RPh)
@@ -162,11 +176,13 @@ def FS_Sliding():
     
     
     
-    
+def qmin_qmax():
     ##############################################################################
     # Calculate qmin and qmax
+    global qmax, qmin
     
-    
+    qmin = (VerticalForceSum / SlabBottom) * (1 - ((6 * np.exp)/SlabBottom)) #psf
+    qmax = (VerticalForceSum / SlabBottom) * (1 + ((6 * np.exp)/SlabBottom)) #psf
         
 
 
@@ -174,10 +190,6 @@ def Bearing_Capacity():
     ##############################################################################
     # Bearing Capacity, values will be the same whether user prefered to use Rankine 
     # or Coulomb above
-
-    # Access Euler's number
-    euler_number = math.e
-    pi_value = math.pi
 
     Nq = np.exp(np.pi * np.tan(Phi_rad)) * np.tan(np.radians(45) + Phi_rad / 2) ** 2
     Nc = (Nq - 1) * np.cot(Phi_rad)
